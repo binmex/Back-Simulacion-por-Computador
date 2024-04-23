@@ -1,1 +1,0 @@
-pool.query("show databases")
