@@ -1,6 +1,6 @@
 const express = require("express");
 
-require("./drivers/conect-db");
+require("./mongo/conect-db");
 
 const app = express();
 
