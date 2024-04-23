@@ -1,8 +1,6 @@
 const express = require("express");
 
-require('dotenv').config();
-
-require("./mongo/connect-db");
+//require('dotenv').config();
 
 const app = express();
 
@@ -10,8 +8,8 @@ const app = express();
 app.set("PORT", process.env.PORT || 4000);
 
 //middelware
-// app.use("/topics", require("./routes/topics"));
-// app.use("/inscriptions", require("./routes/inscriptions"));
+//app.use("/topics", require("./routes/topics"));
+//app.use("/inscriptions", require("./routes/inscriptions"));
 app.use("/students", require("./routes/students"));
 app.use("/", (req, res) =>
   res.send("Back de la actividad número 1 de Simulación por Computadores")

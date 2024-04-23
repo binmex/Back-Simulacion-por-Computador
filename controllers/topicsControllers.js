@@ -1,0 +1,1 @@
+pool.query("show databases")
