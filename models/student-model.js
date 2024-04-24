@@ -18,8 +18,9 @@ const SchemaStudent = new Schema({
     unique: true,
   },
   documentType: {
-    type: Number,
-    required: false,
+    type: String,
+    enum: ["CC", "TI","CE"],
+    required: true,
   },
   firstName: {
     type: String,
@@ -41,10 +42,15 @@ const SchemaStudent = new Schema({
     type: String,
     required: false,
   },
-//   topic: { 
-//     type: Schema.Types.ObjectId,
-//     ref: "topic"
-//   },
+  // inscription: { 
+  //   type: Schema.Types.ObjectId,
+  //   ref: "inscription"
+  // },
+
+  // topic: { 
+  //   type: Schema.Types.ObjectId,
+  //   ref: "topic"
+  // },
  
 
 });
