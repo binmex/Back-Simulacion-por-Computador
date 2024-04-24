@@ -13,7 +13,7 @@ app.set("PORT", process.env.PORT || 4000);
 app.use(express.json());
 
 app.use("/topics", require("./routes/topics"));
-// app.use("/inscriptions", require("./routes/inscriptions"));
+app.use("/inscriptions", require("./routes/inscriptions"));
 app.use("/students", require("./routes/students"));
 app.use("/", (req, res) =>
   res.send("Back de la actividad número 1 de Simulación por Computadores")
