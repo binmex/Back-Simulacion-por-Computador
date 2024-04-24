@@ -24,7 +24,7 @@ exports.findAllInscription = async (req, res) => {
 exports.findByIdInscription = async (req, res) => {
   const { id } = req.params;
   try {
-    const inscription = await Inscription.findById(id);
+    const inscription = await Inscription.findById(id).populate('topic').populate('student');
     if (!inscription) {
       return res.status(404).json({ success: false, message: "Inscripción no encontrada" });
     }
