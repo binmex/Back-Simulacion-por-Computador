@@ -10,7 +10,9 @@ const app = express();
 app.set("PORT", process.env.PORT || 4000);
 
 //middelware
-// app.use("/topics", require("./routes/topics"));
+app.use(express.json());
+
+app.use("/topics", require("./routes/topics"));
 // app.use("/inscriptions", require("./routes/inscriptions"));
 app.use("/students", require("./routes/students"));
 app.use("/", (req, res) =>
