@@ -16,6 +16,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use("/topics", require("./routes/topics"));
 app.use("/inscriptions", require("./routes/inscriptions"));
 app.use("/students", require("./routes/students"));
+
 app.use("/", (req, res) =>
   res.send("Back de la actividad número 1 de Simulación por Computadores")
 );
@@ -23,3 +24,6 @@ app.use("/", (req, res) =>
 app.listen(app.get("PORT"), () =>
   console.log(`server listen on ${app.get("PORT")}`)
 );
+
+// Exportar la aplicación Express
+module.exports = app;
