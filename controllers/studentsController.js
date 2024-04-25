@@ -60,8 +60,9 @@ exports.findById = async (req, res) => {
     const student = await Student.findById(id);
     if (!student) {
       return res.status(404).json({ state: false, message: "No encontrado" });
+    }else{
+      return res.status(200).json({ state: true, data: student });
     }
-    return res.status(200).json({ state: true, data: student });
   } catch (error) {
     return res.status(500).json({ state: false, error: error.message });
   }
@@ -69,14 +70,18 @@ exports.findById = async (req, res) => {
 
 exports.findId = async (req, res) => {
   const { id } = req.params;
-  
   try {
     const data = await Student.find({ id: id });
-    res.status(200).json({ state: true, data: data });
+    if(data.length === 0){ 
+      res.status(404).json({ state: "Usuario no encontrado"});
+    } else {
+      res.status(200).json({ state: true, data: data });
+    }
   } catch (err) {
     res.status(500).json({ state: false, error: err.message });
   }
 };
+
 
 exports.deleteStudent = async (req, res) => {
   const { id } = req.params;

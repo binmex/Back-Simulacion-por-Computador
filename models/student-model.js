@@ -30,11 +30,11 @@ const SchemaStudent = new Schema({
     type: String,
     required: true,
   },
-  age: {
-    type: Number,
+  birthdate: {
+    type: Date,
     required: false,
   },
-  celphone: {
+  cellphone: {
     type: Number,
     required: false,
   },
@@ -42,17 +42,11 @@ const SchemaStudent = new Schema({
     type: String,
     required: false,
   },
-  // inscription: { 
-  //   type: Schema.Types.ObjectId,
-  //   ref: "inscription"
-  // },
-
-  // topic: { 
-  //   type: Schema.Types.ObjectId,
-  //   ref: "topic"
-  // },
- 
-
+  state:{
+    type: String,
+    enum: ["matriculado", "no matriculado"],
+    required: false,
+  }
 });
 
 module.exports = mongoose.model("student", SchemaStudent);
