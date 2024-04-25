@@ -48,6 +48,9 @@ exports.findId = async (req, res) => {
 
   try {
     const data = await Topic.find({ id: id });
+    if (!data) {
+      return res.status(404).json({state: false, message: "No encontrado"});
+    }
     res.status(200).json({ state: true, data: data });
   } catch (err) {
     res.status(500).json({ state: false, error: err.message });
