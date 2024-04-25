@@ -72,7 +72,6 @@ routes.get("/:id", findId);
  *       404:
  *         description: Not found
  */
-
 routes.get("/byId/:id", findById);
 
 /**
