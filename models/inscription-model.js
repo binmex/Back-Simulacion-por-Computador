@@ -6,23 +6,23 @@ const InscriptionSchema = new Schema({
   student: {
     type: Schema.Types.ObjectId,
     ref: "student",
-    required: true
+    required: true,
   },
   topic: {
     type: Schema.Types.ObjectId,
     ref: "topic",
-    required: true
+    required: true,
   },
   registrationDate: {
     type: Date,
-    required: true
+    required: true,
   },
   status: {
     type: String,
-    enum: ['Inscrito', 'No inscrito', 'Cancelado'],
-    default: 'No inscrito',
-    required: true
-  }
+    enum: ["Inscrito", "No inscrito", "Cancelado"],
+    default: "No inscrito",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("inscription", InscriptionSchema);

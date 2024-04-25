@@ -13,7 +13,9 @@ exports.saveInscription = async (req, res) => {
 
 exports.findAllInscription = async (req, res) => {
   try {
-    const inscriptions = await Inscription.find({}).populate('topic').populate('student');
+    const inscriptions = await Inscription.find({})
+      .populate("topic")
+      .populate("student");
     res.status(200).json({ success: true, data: inscriptions });
   } catch (error) {
     console.error(error);
@@ -24,9 +26,13 @@ exports.findAllInscription = async (req, res) => {
 exports.findByIdInscription = async (req, res) => {
   const { id } = req.params;
   try {
-    const inscription = await Inscription.findById(id).populate('topic').populate('student');
+    const inscription = await Inscription.findById(id)
+      .populate("topic")
+      .populate("student");
     if (!inscription) {
-      return res.status(404).json({ success: false, message: "Inscripción no encontrada" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Inscripción no encontrada" });
     }
     res.status(200).json({ success: true, data: inscription });
   } catch (error) {
@@ -39,9 +45,15 @@ exports.updateInscription = async (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
   try {
-    const updatedInscription = await Inscription.findByIdAndUpdate(id, updateData, { new: true });
+    const updatedInscription = await Inscription.findByIdAndUpdate(
+      id,
+      updateData,
+      { new: true }
+    );
     if (!updatedInscription) {
-      return res.status(404).json({ success: false, message: "Inscripción no encontrada" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Inscripción no encontrada" });
     }
     res.status(200).json({ success: true, data: updatedInscription });
   } catch (error) {
@@ -54,7 +66,9 @@ exports.deleteInscription = async (req, res) => {
   const { id } = req.params;
   try {
     await Inscription.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: "Inscripción eliminada correctamente" });
+    res
+      .status(200)
+      .json({ success: true, message: "Inscripción eliminada correctamente" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });

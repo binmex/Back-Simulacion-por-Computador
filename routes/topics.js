@@ -6,7 +6,6 @@ const {
   findId,
   findById,
   deleteTopic,
- 
 } = require("../controllers/topicsControllers");
 
 routes.get("/", findAll);
@@ -15,6 +14,5 @@ routes.get("/byId/:id", findById);
 routes.post("/", save);
 routes.patch("/:id", update);
 routes.delete("/:id", deleteTopic);
-
 
 module.exports = routes;

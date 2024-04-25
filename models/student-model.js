@@ -19,7 +19,7 @@ const SchemaStudent = new Schema({
   },
   documentType: {
     type: String,
-    enum: ["CC", "TI","CE"],
+    enum: ["CC", "TI", "CE"],
     required: true,
   },
   firstName: {
@@ -42,11 +42,11 @@ const SchemaStudent = new Schema({
     type: String,
     required: false,
   },
-  state:{
+  state: {
     type: String,
     enum: ["matriculado", "no matriculado"],
     required: false,
-  }
+  },
 });
 
 module.exports = mongoose.model("student", SchemaStudent);

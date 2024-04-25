@@ -27,13 +27,13 @@ const SchemaTopic = new Schema({
   },
   state: {
     type: String,
-    enum: ['activo','inactivo'],
+    enum: ["activo", "inactivo"],
     required: true,
   },
   quotas: {
     type: Number,
     required: true,
-  }
+  },
 });
 
 module.exports = mongoose.model("topic", SchemaTopic);
