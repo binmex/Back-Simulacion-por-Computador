@@ -20,7 +20,7 @@ describe("Topic Controller Tests", () => {
       const response = await request(app).post("/topics").send(mockTopic);
 
       expect(response.status).toBe(200);
-      expect(response.body.state).toBe(true);
+      expect(response.body.success).toBe(true);
       expect(response.body.data).toEqual(mockTopic);
     });
   });
@@ -33,7 +33,7 @@ describe("Topic Controller Tests", () => {
       const response = await request(app).get(`/topics/byId/${topicId}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.state).toBe(false);
+      expect(response.body.success).toBe(false);
       expect(response.body.message).toBe("No encontrado");
     });
   });
@@ -46,7 +46,7 @@ describe("Topic Controller Tests", () => {
       const response = await request(app).get(`/topics/${topicId}`);
 
       expect(response.status).toBe(404);
-      expect(response.body.state).toBe(false);
+      expect(response.body.success).toBe(false);
       expect(response.body.message).toBe("No encontrado");
     });
 
@@ -62,7 +62,7 @@ describe("Topic Controller Tests", () => {
     
       // Expectations for a successful response
       expect(response.status).toBe(200);
-      expect(response.body.state).toBe(true);
+      expect(response.body.success).toBe(true);
       expect(response.body.data).toEqual(mockData); 
     });
     
@@ -77,10 +77,11 @@ describe("Topic Controller Tests", () => {
       const response = await request(app).delete(`/topics/${topicId}`);
 
       expect(response.status).toBe(500);
-      expect(response.body.state).toBe(false);
+      expect(response.body.success).toBe(false);
       expect(response.body.error).toBe(errorMessage);
     });
   });
+
 
   afterAll(async () => {
     // Cierra la conexión a la base de datos
