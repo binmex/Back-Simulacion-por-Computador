@@ -3,6 +3,7 @@ const {
   save,
   update,
   findAll,
+  infoPaged,
   findId,
   findById,
   deleteStudent,
@@ -29,6 +30,34 @@ const {
  *         description: Not found
  */
 routes.get("/", findAll);
+
+/**
+ * @swagger
+ * /students/paged:
+ *   get:
+ *     tags:
+ *       - Estudiantes
+ *     description: Devuelve todos los estudiantes paginados
+ *     parameters:
+ *       - in: query
+ *         name: PageSize
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Tamaño de la página
+ *       - in: query
+ *         name: PageNumber
+ *         schema:
+ *           type: integer
+ *           minimum: 1
+ *         description: Número de página
+ *     responses:
+ *       200:
+ *         description: Éxito
+ *       404:
+ *         description: No encontrado
+ */
+routes.get("/paged", infoPaged);
 
 /**
  * @swagger

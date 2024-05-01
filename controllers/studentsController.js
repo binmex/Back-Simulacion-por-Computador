@@ -38,6 +38,24 @@ exports.findAll = async (req, res) => {
   }
 };
 
+exports.infoPaged = async (req, res) => {
+  try {
+    let { PageSize = 10, PageNumber = 1 } = req.query;
+    PageSize = parseInt(PageSize);
+    PageNumber = parseInt(PageNumber);
+
+    const skip = (PageNumber - 1) * PageSize;
+    const data = await Student.find({})
+      .sort({ firstName: 1 })
+      .skip(skip)
+      .limit(PageSize);
+
+    res.status(200).json({ state: true, data: data });
+  } catch (err) {
+    res.status(500).json({ state: false, error: err.message });
+  }
+};
+
 exports.findById = async (req, res) => {
   const { id } = req.params;
   try {
