@@ -22,7 +22,7 @@ const {
  *   get:
  *     tags:
  *       - Estudiantes
- *     description: Returns all students
+ *     description: Devuelve todos los estudiantes
  *     responses:
  *       200:
  *         description: Success
@@ -44,18 +44,36 @@ routes.get("/", findAll);
  *         schema:
  *           type: integer
  *           minimum: 1
+ *           example: 10
  *         description: Tamaño de la página
  *       - in: query
  *         name: PageNumber
  *         schema:
  *           type: integer
  *           minimum: 1
+ *           example: 1
  *         description: Número de página
+ *       - in: query
+ *         name: SortBy
+ *         schema:
+ *           type: string
+ *           example: "firstName"
+ *           enum: [firstName, lastName, code]
+ *         description: Campo por el cual ordenar los resultados (nombre, apellido, código)
+ *       - in: query
+ *         name: SortDirection
+ *         schema:
+ *           type: string
+ *           example: "Asc"
+ *           enum: [Asc, Desc]
+ *         description: Dirección de ordenación (Ascendente o Descendente)
  *     responses:
  *       200:
  *         description: Éxito
  *       404:
  *         description: No encontrado
+ *       500:
+ *         description: Error del servidor
  */
 routes.get("/paged", infoPaged);
 
@@ -65,7 +83,7 @@ routes.get("/paged", infoPaged);
  *   get:
  *     tags:
  *       - Estudiantes
- *     description: Returns the student that belongs to the provided ID
+ *     description: Retorna el estudiante buscado por un ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -86,7 +104,7 @@ routes.get("/:id", findId);
  *   get:
  *     tags:
  *       - Estudiantes
- *     description: Returns the student that belongs to the provided ID (Object ID)
+ *     description: Retorna un estudiante buscado por su ObjectId de MongoDB
  *     parameters:
  *       - in: path
  *         name: id
@@ -109,7 +127,7 @@ routes.get("/byId/:id", findById);
  *   post:
  *     tags:
  *       - Estudiantes
- *     description: Create a new student
+ *     description: Crea un nuevo estudiante
  *     requestBody:
  *       required: true
  *       content:
@@ -152,7 +170,7 @@ routes.post("/", save);
  *   patch:
  *     tags:
  *       - Estudiantes
- *     description: Update a student by ID
+ *     description: Actualiza un estudiante por su ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -203,7 +221,7 @@ routes.patch("/:id", update);
  *   delete:
  *     tags:
  *       - Estudiantes
- *     description: Delete a student by ID
+ *     description: Elimina un estudiante por su ID
  *     parameters:
  *       - in: path
  *         name: id

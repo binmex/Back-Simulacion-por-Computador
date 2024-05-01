@@ -21,7 +21,7 @@ const {
  *   get:
  *     tags:
  *       - Materias
- *     description: Returns all topics
+ *     description: Devuelve todas las materias
  *     responses:
  *       200:
  *         description: Success
@@ -36,7 +36,7 @@ routes.get("/", findAll);
  *   get:
  *     tags:
  *       - Materias
- *     description: Returns the topic that belongs to the provided ID
+ *     description: Busca una materia por su ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -57,7 +57,7 @@ routes.get("/:id", findId);
  *   get:
  *     tags:
  *       - Materias
- *     description: Returns the topic that belongs to the provided ID (Object ID)
+ *     description: Busca una materia por su ObjectId de MongoDB
  *     parameters:
  *       - in: path
  *         name: id
@@ -80,7 +80,7 @@ routes.get("/byId/:id", findById);
  *   post:
  *     tags:
  *       - Materias
- *     description: Create a new topic
+ *     description: Crea una nueva materia
  *     requestBody:
  *       required: true
  *       content:
@@ -123,7 +123,7 @@ routes.post("/", save);
  *   patch:
  *     tags:
  *       - Materias
- *     description: Update a topic by ID
+ *     description: Actualiza una materia por su ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -176,7 +176,7 @@ routes.patch("/:id", update);
  *   delete:
  *     tags:
  *       - Materias
- *     description: Delete a topic by ID
+ *     description: Elimina una materia por su ID
  *     parameters:
  *       - in: path
  *         name: id

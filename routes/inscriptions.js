@@ -21,7 +21,7 @@ const {
  *   get:
  *     tags:
  *       - Inscripciones
- *     description: Returns all inscriptions
+ *     description: Devuelve todas las inscripciones
  *     responses:
  *       200:
  *         description: Success
@@ -36,7 +36,7 @@ router.get("/", findAllInscription);
  *   post:
  *     tags:
  *       - Inscripciones
- *     description: Create a new inscription
+ *     description: Crea una nueva inscripción
  *     requestBody:
  *       required: true
  *       content:
@@ -75,7 +75,7 @@ router.post("/", saveInscription);
  *   get:
  *     tags:
  *       - Inscripciones
- *     description: Returns the inscription that belongs to the provided ID (Object ID)
+ *     description: Busca una inscripción por su ObjectId de MongoDB
  *     parameters:
  *       - in: path
  *         name: id
@@ -98,7 +98,7 @@ router.get("/:id", findByIdInscription);
  *   patch:
  *     tags:
  *       - Inscripciones
- *     description: Update an inscription by ID
+ *     description: Actualiza una inscripción por su ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -149,7 +149,7 @@ router.patch("/:id", updateInscription);
  *   delete:
  *     tags:
  *       - Inscripciones
- *     description: Delete an inscription by ID
+ *     description: Elimina una inscripción por su ID
  *     parameters:
  *       - in: path
  *         name: id
