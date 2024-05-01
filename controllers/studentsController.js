@@ -1,4 +1,5 @@
 const Student = require("../models/student-model");
+const { handleRequest } = require("../utils/requestHandler");
 
 exports.save = async (req, res) => {
   try {
@@ -38,21 +39,36 @@ exports.findAll = async (req, res) => {
 };
 
 exports.infoPaged = async (req, res) => {
-  try {
-    let { PageSize = 10, PageNumber = 1 } = req.query;
-    PageSize = parseInt(PageSize);
-    PageNumber = parseInt(PageNumber);
+  handleRequest(res, async () => {
+    const {
+      PageSize = 10,
+      PageNumber = 1,
+      SortBy = "",
+      SortDirection = "Asc",
+    } = req.query;
+    const pageSize = parseInt(PageSize);
+    const pageNumber = parseInt(PageNumber);
+    const allowedSortBy = ["firstName", "lastName", "code"];
+    const allowedSortDirections = ["Asc", "Desc"];
 
-    const skip = (PageNumber - 1) * PageSize;
+    const direction =
+      allowedSortDirections.includes(SortDirection) && SortDirection === "Desc"
+        ? -1
+        : 1;
+    const sortObject = allowedSortBy.includes(SortBy)
+      ? { [SortBy]: direction }
+      : { _id: -1 };
+
     const data = await Student.find({})
-      .sort({ firstName: 1 })
-      .skip(skip)
-      .limit(PageSize);
+      .sort(sortObject)
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize);
 
-    res.status(200).json({ state: true, data: data });
-  } catch (err) {
-    res.status(500).json({ state: false, error: err.message });
-  }
+    if (data.length === 0) {
+      return { success: false, status: 404, message: "No hay información" };
+    }
+    return { success: true, status: 200, data };
+  });
 };
 
 exports.findById = async (req, res) => {
