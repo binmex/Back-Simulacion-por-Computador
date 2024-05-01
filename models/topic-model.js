@@ -5,7 +5,7 @@ const SchemaTopic = new Schema({
   id: {
     type: Number,
     required: true,
-    unique: true,
+    unique: false,
   },
   name: {
     type: String,
