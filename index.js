@@ -1,6 +1,6 @@
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
-const { swaggerSpecs } = require("./swagger");
+const { swaggerSpecs } = require("./utils/swagger");
 
 require("dotenv").config();
 require("./mongo/connect-db");

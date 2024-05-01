@@ -10,7 +10,7 @@ const options = {
       description: "Documentación  de la API de Simulación por Computador",
     },
   },
-  apis: [`${path.join(__dirname, "./routes/*.js")}`], // Rutas donde se encuentran los comentarios JSDoc
+  apis: [`${path.join(__dirname, "../routes/*.js")}`], // Rutas donde se encuentran los comentarios JSDoc
 };
 
 exports.swaggerSpecs = swaggerJsdoc(options);
