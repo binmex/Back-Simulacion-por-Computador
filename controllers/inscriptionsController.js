@@ -13,7 +13,7 @@ exports.saveInscription = async (req, res) => {
 
     //evalua si se lleno el curso
     if (currentTopic.quotas === numInscritos) {
-      var searchTerm = currentTopic.name; //bajo que variable se realizara el like
+      let searchTerm = currentTopic.name; //bajo que variable se realizara el like
 
       let contador = (
         await topicModel.find({ name: { $regex: new RegExp(searchTerm, "i") } })
