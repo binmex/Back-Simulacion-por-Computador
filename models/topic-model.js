@@ -34,6 +34,7 @@ const SchemaTopic = new Schema({
     type: Number,
     required: true,
   },
+  
 });
 
 module.exports = mongoose.model("topic", SchemaTopic);
