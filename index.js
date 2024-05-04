@@ -14,6 +14,7 @@ app.set("PORT", process.env.PORT || 4000);
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use("/topics", require("./routes/topics"));
+app.use("/groups", require("./routes/groups"));
 app.use("/inscriptions", require("./routes/inscriptions"));
 app.use("/students", require("./routes/students"));
 

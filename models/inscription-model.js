@@ -8,9 +8,9 @@ const InscriptionSchema = new Schema({
     ref: "student",
     required: true,
   },
-  topic: {
+  group: {
     type: Schema.Types.ObjectId,
-    ref: "topic",
+    ref: "group",
     required: true,
   },
   registrationDate: {
