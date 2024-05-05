@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const SchemaGroup = new Schema({
-
+    name: {
+      type: String,
+      required: true,
+    },
     grupo: {
         type: String,
         enum: ["grupo1","grupo2","grupo3"],
-        required: true,       
+        required: true,   
     },
-    name: {
-        type: String,
-        required: true,
-    },
+    
     topic: {
       type: Schema.Types.ObjectId,
       ref: "topic",

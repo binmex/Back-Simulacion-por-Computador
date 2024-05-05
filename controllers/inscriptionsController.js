@@ -140,13 +140,29 @@ exports.updateInscription = async (req, res) => {
   }
 };
 
+
 exports.deleteInscription = async (req, res) => {
+
   const { id } = req.params;
   try {
+    
+    const inscription = await Inscription.findById(id);
+    if (!inscription) {
+      return res.status(404).json({ success: false, error: "Inscripción no encontrada" });
+    }
+
     await Inscription.findByIdAndDelete(id);
-    res
-      .status(200)
-      .json({ success: true, message: "Inscripción eliminada correctamente" });
+
+   
+    const group = await Group.findById(inscription.group);
+    if (!group) {
+      return res.status(404).json({ success: false, error: "Grupo no encontrado" });
+    }
+
+    group.quotas++; 
+    await group.save();
+
+    res.status(200).json({ success: true, message: "Inscripción eliminada correctamente" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
