@@ -66,19 +66,21 @@ router.get("/", findAllInscription);
  *     responses:
  *       200:
  *         description: Success
+ *       500:
+ *         description: Error del servidor
  */
 router.post("/", saveInscription);
 
 /**
  * @swagger
- * /inscriptions/{id}:
+ * /inscriptions/{objectId}:
  *   get:
  *     tags:
  *       - Inscripciones
  *     description: Busca una inscripción por su ObjectId de MongoDB
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: objectId
  *         required: true
  *         schema:
  *           type: string
@@ -89,19 +91,21 @@ router.post("/", saveInscription);
  *         description: Success
  *       404:
  *         description: Not found
+ *       500:
+ *         description: Error del servidor
  */
 router.get("/:id", findByIdInscription);
 
 /**
  * @swagger
- * /inscriptions/{id}:
+ * /inscriptions/{objectId}:
  *   patch:
  *     tags:
  *       - Inscripciones
  *     description: Actualiza una inscripción por su ID
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: objectId
  *         required: true
  *         schema:
  *           type: string
@@ -140,19 +144,21 @@ router.get("/:id", findByIdInscription);
  *         description: No encontrado
  *       400:
  *         description: Solicitud incorrecta
+ *       500:
+ *         description: Error del servidor
  */
 router.patch("/:id", updateInscription);
 
 /**
  * @swagger
- * /inscriptions/{id}:
+ * /inscriptions/{objectId}:
  *   delete:
  *     tags:
  *       - Inscripciones
  *     description: Elimina una inscripción por su ID
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: objectId
  *         required: true
  *         schema:
  *           type: string
@@ -163,6 +169,8 @@ router.patch("/:id", updateInscription);
  *         description: Éxito
  *       404:
  *         description: No encontrado
+ *       500:
+ *         description: Error del servidor
  */
 router.delete("/:id", deleteInscription);
 

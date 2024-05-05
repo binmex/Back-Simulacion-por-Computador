@@ -2,7 +2,6 @@ const routes = require("express").Router();
 const {
   save,
   update,
-  findAll,
   infoPaged,
   findId,
   findById,
@@ -19,21 +18,6 @@ const {
 /**
  * @swagger
  * /students:
- *   get:
- *     tags:
- *       - Estudiantes
- *     description: Devuelve todos los estudiantes
- *     responses:
- *       200:
- *         description: Success
- *       404:
- *         description: Not found
- */
-routes.get("/", findAll);
-
-/**
- * @swagger
- * /students/paged:
  *   get:
  *     tags:
  *       - Estudiantes
@@ -75,7 +59,7 @@ routes.get("/", findAll);
  *       500:
  *         description: Error del servidor
  */
-routes.get("/paged", infoPaged);
+routes.get("/", infoPaged);
 
 /**
  * @swagger
@@ -100,14 +84,14 @@ routes.get("/:id", findId);
 
 /**
  * @swagger
- * /students/byId/{id}:
+ * /students/byId/{objectId}:
  *   get:
  *     tags:
  *       - Estudiantes
  *     description: Retorna un estudiante buscado por su ObjectId de MongoDB
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: objectId
  *         required: true
  *         schema:
  *           type: string

@@ -27,6 +27,8 @@ const {
  *         description: Success
  *       404:
  *         description: Not found
+ *       500:
+ *         description: Error del servidor
  */
 routes.get("/", findAll);
 
@@ -48,19 +50,21 @@ routes.get("/", findAll);
  *         description: Success
  *       404:
  *         description: Not found
+ *       500:
+ *         description: Error del servidor
  */
 routes.get("/:id", findId);
 
 /**
  * @swagger
- * /topics/byId/{id}:
+ * /topics/byId/{objectId}:
  *   get:
  *     tags:
  *       - Materias
  *     description: Busca una materia por su ObjectId de MongoDB
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: objectId
  *         required: true
  *         schema:
  *           type: string
@@ -71,6 +75,8 @@ routes.get("/:id", findId);
  *         description: Success
  *       404:
  *         description: Not found
+ *       500:
+ *         description: Error del servidor
  */
 routes.get("/byId/:id", findById);
 
@@ -114,6 +120,8 @@ routes.get("/byId/:id", findById);
  *     responses:
  *       200:
  *         description: Éxito
+ *       500:
+ *         description: Error del servidor
  */
 routes.post("/", save);
 
@@ -167,6 +175,8 @@ routes.post("/", save);
  *         description: No encontrado
  *       400:
  *         description: Solicitud incorrecta
+ *       500:
+ *         description: Error del servidor
  */
 routes.patch("/:id", update);
 
@@ -188,6 +198,8 @@ routes.patch("/:id", update);
  *         description: Success
  *       404:
  *         description: Not found
+ *       500:
+ *         description: Error del servidor
  */
 routes.delete("/:id", deleteTopic);
 

@@ -23,7 +23,7 @@ app.use("/", (req, res) =>
 );
 
 app.listen(app.get("PORT"), () =>
-  console.log(`Server listen on ${app.get("PORT")}`)
+  console.log(`Server listen on port: ${app.get("PORT")}`)
 );
 
 // Exportar la aplicación Express

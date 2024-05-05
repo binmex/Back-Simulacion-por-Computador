@@ -40,6 +40,7 @@ exports.findById = async (req, res) => {
 
 exports.findId = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   handleRequest(res, async () => {
     const data = await Topic.find({ id: id });
     if (!data) {

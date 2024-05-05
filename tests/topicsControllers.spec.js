@@ -51,21 +51,19 @@ describe("Topic Controller Tests", () => {
     });
 
     test("test_findId_TopicFound", async () => {
-
       // Mocking the Topic.find function to simulate successful retrieval of data
       const mockData = { id: 1, title: "Sample Topic" };
       Topic.find.mockResolvedValue(mockData);
-    
+
       // Simulating a request with the topicId parameter
       const topicId = 1;
       const response = await request(app).get(`/topics/${topicId}`);
-    
+
       // Expectations for a successful response
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
-      expect(response.body.data).toEqual(mockData); 
+      expect(response.body.data).toEqual(mockData);
     });
-    
   });
 
   describe("deleteTopic function", () => {
@@ -81,7 +79,6 @@ describe("Topic Controller Tests", () => {
       expect(response.body.error).toBe(errorMessage);
     });
   });
-
 
   afterAll(async () => {
     // Cierra la conexión a la base de datos

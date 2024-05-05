@@ -29,15 +29,6 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.findAll = async (req, res) => {
-  try {
-    const data = await Student.find({});
-    res.status(200).json({ state: true, data: data });
-  } catch (err) {
-    res.status(500).json({ state: false, error: err.message });
-  }
-};
-
 exports.infoPaged = async (req, res) => {
   handleRequest(res, async () => {
     const {

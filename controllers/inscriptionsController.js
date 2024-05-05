@@ -3,62 +3,86 @@ const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
 const Student = require("../models/student-model");
 
-
 exports.saveInscription = async (req, res) => {
   try {
     const { student, group, registrationDate, status } = req.body;
     let targetGroup = await Group.findById(group._id);
-    console.log(targetGroup)
+    console.log(targetGroup);
     if (!targetGroup) {
-      return res.status(404).json({ success: false, error: "Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Grupo no encontrado" });
     }
 
     // Vrificar si el estudiante ya está inscrito en el grupo
-    const existingInscription = await Inscription.findOne({ student: student._id, group: group._id });
+    const existingInscription = await Inscription.findOne({
+      student: student._id,
+      group: group._id,
+    });
     if (existingInscription) {
-      return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este grupo" });
+      return res
+        .status(400)
+        .json({
+          success: false,
+          error: "El estudiante ya está inscrito en este grupo",
+        });
     }
 
     // el estudiante ya está inscrito en algun< otro grupo de la misma materia
-    const topicGroups = await Group.find({ topic: targetGroup.topic }).populate('topic');
+    const topicGroups = await Group.find({ topic: targetGroup.topic }).populate(
+      "topic"
+    );
 
     for (const topicGroup of topicGroups) {
-      const existingInscription = await Inscription.findOne({ student: student._id, group: topicGroup._id });
+      const existingInscription = await Inscription.findOne({
+        student: student._id,
+        group: topicGroup._id,
+      });
       if (existingInscription) {
-        return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en otro grupo de la misma materia" });
+        return res
+          .status(400)
+          .json({
+            success: false,
+            error:
+              "El estudiante ya está inscrito en otro grupo de la misma materia",
+          });
       }
     }
 
-    // Verificar si hay cupos disponibles en el grupo     
+    // Verificar si hay cupos disponibles en el grupo
 
     // Si no hay cupos buscar o crear un nuevo grupo
     if (targetGroup.quotas <= 0) {
-      
-      const alternativeGroups = await Group.find({ 
+      const alternativeGroups = await Group.find({
         _id: { $ne: group._id },
-        name: targetGroup.name, 
-        quotas: { $gt: 0 } 
+        name: targetGroup.name,
+        quotas: { $gt: 0 },
       });
 
       // Si hay grupos alternativos disponibles
       if (alternativeGroups.length > 0) {
         targetGroup = alternativeGroups[0];
       } else {
-        const lastGroup = await Group.findOne({ grupo: { $regex: /grupo\d+/ } }).sort({ grupo: -1 });
+        const lastGroup = await Group.findOne({
+          grupo: { $regex: /grupo\d+/ },
+        }).sort({ grupo: -1 });
 
         let newGroupName = "grupo1";
         if (lastGroup) {
-         
-          const lastGroupNumber = parseInt(lastGroup.grupo.replace("grupo", ""));
+          const lastGroupNumber = parseInt(
+            lastGroup.grupo.replace("grupo", "")
+          );
           newGroupName = `grupo${lastGroupNumber + 1}`;
         }
 
         const topic = await Topic.findById(targetGroup.topic);
         if (!topic) {
-          return res.status(404).json({ success: false, error: "Materia no encontrada" });
+          return res
+            .status(404)
+            .json({ success: false, error: "Materia no encontrada" });
         }
 
-        // Crear un nuevo grupo 
+        // Crear un nuevo grupo
         const newGroup = new Group({
           grupo: newGroupName,
           name: targetGroup.name,
@@ -71,7 +95,7 @@ exports.saveInscription = async (req, res) => {
         targetGroup = newGroup;
       }
     }
-    // inscribir al estudiante 
+    // inscribir al estudiante
     const newInscription = new Inscription({
       student: student._id,
       group: targetGroup._id,

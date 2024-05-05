@@ -1,11 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const {
-    save,
-    findById,
-    findByName,
+  save,
+  findById,
+  findByName,
 } = require("../controllers/groupController");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Grupos
+ *   description: Operaciones relacionadas con grupos
+ */
 
 /**
  * @swagger
@@ -19,10 +25,22 @@ const {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Group'
+ *             type: object
+ *             properties:
+ *               grupo:
+ *                 type: string
+ *                 enum: [grupo1, grupo2, grupo3]
+ *               name:
+ *                 type: string
+ *               topic:
+ *                 type: string
+ *                 format: ObjectId
+ *                 example: "6085e894932ec20015bbf017"
+ *               quotas:
+ *                 type: number
  *     responses:
  *       200:
- *         description: Grupo creado con éxito
+ *         description: Grupo creado exitosamente
  *       500:
  *         description: Error del servidor
  */
@@ -30,14 +48,14 @@ router.post("/", save);
 
 /**
  * @swagger
- * /groups/{id}:
+ * /groups/{objectId}:
  *   get:
  *     tags:
  *       - Grupos
- *     description: Obtiene el grupo por su ID
+ *     description: Obtiene el grupo por su ObjectId de MonogDB
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: objectId
  *         required: true
  *         schema:
  *           type: string
@@ -48,6 +66,8 @@ router.post("/", save);
  *         description: Grupo encontrado con éxito
  *       404:
  *         description: Grupo no encontrado
+ *       500:
+ *         description: Error del servidor
  */
 router.get("/:id", findById);
 
@@ -69,6 +89,8 @@ router.get("/:id", findById);
  *         description: Grupo encontrado con éxito
  *       404:
  *         description: Grupo no encontrado
+ *       500:
+ *         description: Error del servidor
  */
 router.get("/findOne", findByName);
 
