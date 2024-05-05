@@ -37,6 +37,12 @@ const {
  *     responses:
  *       201:
  *         description: Grupo creado exitosamente
+ *       400:
+ *         description: Solicitud incorrecta
+ *       404:
+ *         description: Materia no encontrada
+ *       409:
+ *         description: Conflicto, el grupo ya existe para esa materia
  *       500:
  *         description: Error del servidor
  */

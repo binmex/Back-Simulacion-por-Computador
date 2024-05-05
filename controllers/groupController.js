@@ -6,15 +6,36 @@ exports.save = async (req, res) => {
     const { topic } = req.body;
 
     if (!topic) {
-      throw new Error(
-        "El campo 'topic._id' es requerido en el cuerpo de la solicitud"
-      );
+      return res
+        .status(400)
+        .json({
+          success: false,
+          error:
+            "El campo 'topic._id' es requerido en el cuerpo de la solicitud",
+        });
     }
 
     const existingTopic = await Topic.findById(topic);
 
     if (!existingTopic) {
-      throw new Error("materia no existe");
+      return res
+        .status(404)
+        .json({ success: false, error: "La materia no existe" });
+    }
+
+    // Verificar si ya existe un grupo con el mismo tema
+    const existingGroup = await Group.findOne({
+      topic: existingTopic._id,
+      grupo: req.body.grupo,
+    });
+
+    if (existingGroup) {
+      return res
+        .status(409)
+        .json({
+          success: false,
+          error: `El ${req.body.grupo} de esa materia ya existe`,
+        });
     }
 
     const newGroup = new Group({
@@ -30,6 +51,7 @@ exports.save = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 exports.findById = async (req, res) => {
   const { id } = req.params;
   try {
