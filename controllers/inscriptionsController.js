@@ -8,6 +8,7 @@ exports.saveInscription = async (req, res) => {
   try {
     const { student, group, registrationDate, status } = req.body;
     let targetGroup = await Group.findById(group._id);
+    console.log(targetGroup)
     if (!targetGroup) {
       return res.status(404).json({ success: false, error: "Grupo no encontrado" });
     }
@@ -152,3 +153,31 @@ exports.deleteInscription = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+// exports.deleteInscription = async (req, res) => {
+
+//   const { id } = req.params;
+//   try {
+//     // Buscar la inscripción a eliminar para obtener el grupo asociado
+//     const inscription = await Inscription.findById(id);
+//     if (!inscription) {
+//       return res.status(404).json({ success: false, error: "Inscripción no encontrada" });
+//     }
+
+//     // Eliminar la inscripción
+//     await Inscription.findByIdAndDelete(id);
+
+//     // Obtener el grupo asociado a la inscripción y aumentar en uno las quotas
+//     const group = await Group.findById(inscription.group);
+//     if (!group) {
+//       return res.status(404).json({ success: false, error: "Grupo no encontrado" });
+//     }
+
+//     group.quotas++; // Aumentar en uno las quotas
+//     await group.save();
+
+//     res.status(200).json({ success: true, message: "Inscripción eliminada correctamente" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };

@@ -7,11 +7,14 @@ exports.save = async (req, res) => {
     const {  topic } = req.body;
     
     let topicId;
+    console.log(topic._id)
     if (topic && topic._id) {
       topicId = topic._id;
     } else {
       throw new Error("El campo 'topic._id' es requerido en el cuerpo de la solicitud");
     }
+
+    
     const existingTopic = await Topic.findById(topicId);
     console.log(existingTopic);
     if (!existingTopic) {
