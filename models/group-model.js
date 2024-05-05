@@ -9,7 +9,7 @@ const SchemaGroup = new Schema({
   },
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   topic: {
     type: Schema.Types.ObjectId,
@@ -18,7 +18,7 @@ const SchemaGroup = new Schema({
   },
   quotas: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 

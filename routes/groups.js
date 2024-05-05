@@ -30,16 +30,12 @@ const {
  *               grupo:
  *                 type: string
  *                 enum: [grupo1, grupo2, grupo3]
- *               name:
- *                 type: string
  *               topic:
  *                 type: string
  *                 format: ObjectId
  *                 example: "6085e894932ec20015bbf017"
- *               quotas:
- *                 type: number
  *     responses:
- *       200:
+ *       201:
  *         description: Grupo creado exitosamente
  *       500:
  *         description: Error del servidor

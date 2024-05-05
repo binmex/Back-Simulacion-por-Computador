@@ -5,21 +5,18 @@ exports.save = async (req, res) => {
   try {
     const { topic } = req.body;
 
-    let topicId;
-    console.log(topic._id);
-    if (topic && topic._id) {
-      topicId = topic._id;
-    } else {
+    if (!topic) {
       throw new Error(
         "El campo 'topic._id' es requerido en el cuerpo de la solicitud"
       );
     }
 
-    const existingTopic = await Topic.findById(topicId);
-    console.log(existingTopic);
+    const existingTopic = await Topic.findById(topic);
+
     if (!existingTopic) {
       throw new Error("materia no existe");
     }
+
     const newGroup = new Group({
       grupo: req.body.grupo,
       name: existingTopic.name,
@@ -30,7 +27,6 @@ exports.save = async (req, res) => {
     const data = await newGroup.save();
     res.status(201).json({ success: true, data });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
