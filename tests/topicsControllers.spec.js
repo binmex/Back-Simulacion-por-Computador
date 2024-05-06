@@ -2,7 +2,6 @@ const request = require("supertest");
 const app = require("../index");
 const Topic = require("../models/topic-model");
 const mongoose = require("../mongo/connect-db");
-const { json } = require("express");
 
 jest.mock("../models/topic-model");
 
