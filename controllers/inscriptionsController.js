@@ -1,26 +1,26 @@
 const Inscription = require("../models/inscription-model");
 const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
-const Student = require("../models/student-model");
-
 
 exports.saveInscription = async (req, res) => {
   try {
-    const { student, group: groupId, registrationDate, status } = req.body;
+    const { student, group: groupId, registrationDate } = req.body;
 
     // Verificar si hay cupos disponibles en el grupo original
     const originalGroup = await Group.findById(groupId);
     if (!originalGroup) {
-      return res.status(404).json({ success: false, error: "Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Grupo no encontrado" });
     }
 
     if (originalGroup.quotas > 0) {
       // Si hay cupos disponibles en el grupo original, inscribir al estudiante en ese grupo
       const newInscription = new Inscription({
-        student: student._id,
+        student: student,
         group: groupId,
         registrationDate,
-        status,
+        status: "Inscrito",
       });
 
       await newInscription.save();
@@ -32,12 +32,14 @@ exports.saveInscription = async (req, res) => {
       // Buscar el siguiente grupo disponible especificamente para la materia del grupo original
       const originalTopic = await Topic.findById(originalGroup.topic);
       if (!originalTopic) {
-        return res.status(404).json({ success: false, error: "materia no encontrada" });
+        return res
+          .status(404)
+          .json({ success: false, error: "materia no encontrada" });
       }
 
-      const availableGroups = await Group.find({ 
+      const availableGroups = await Group.find({
         topic: originalTopic._id,
-        quotas: { $gt: 0 } 
+        quotas: { $gt: 0 },
       }).sort({ grupo: 1 });
 
       let targetGroup;
@@ -45,11 +47,15 @@ exports.saveInscription = async (req, res) => {
         targetGroup = availableGroups[0];
       } else {
         // Crear un nuevo grupo para la materia
-        const lastGroup = await Group.findOne({ topic: originalTopic._id }).sort({ grupo: -1 });
+        const lastGroup = await Group.findOne({
+          topic: originalTopic._id,
+        }).sort({ grupo: -1 });
 
         let newGroupName = "grupo1";
         if (lastGroup) {
-          const lastGroupNumber = parseInt(lastGroup.grupo.replace("grupo", ""));
+          const lastGroupNumber = parseInt(
+            lastGroup.grupo.replace("grupo", "")
+          );
           newGroupName = `grupo${lastGroupNumber + 1}`;
         }
 
@@ -66,10 +72,10 @@ exports.saveInscription = async (req, res) => {
 
       // Inscribir al estudiante en el grupo alternativo
       const newInscription = new Inscription({
-        student: student._id,
+        student: student,
         group: targetGroup._id,
         registrationDate,
-        status,
+        status: "Inscrito",
       });
 
       await newInscription.save();
@@ -83,7 +89,6 @@ exports.saveInscription = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 
 exports.findAllInscription = async (req, res) => {
   try {
@@ -148,31 +153,3 @@ exports.deleteInscription = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-// exports.deleteInscription = async (req, res) => {
-
-//   const { id } = req.params;
-//   try {
-//     // Buscar la inscripción a eliminar para obtener el grupo asociado
-//     const inscription = await Inscription.findById(id);
-//     if (!inscription) {
-//       return res.status(404).json({ success: false, error: "Inscripción no encontrada" });
-//     }
-
-//     // Eliminar la inscripción
-//     await Inscription.findByIdAndDelete(id);
-
-//     // Obtener el grupo asociado a la inscripción y aumentar en uno las quotas
-//     const group = await Group.findById(inscription.group);
-//     if (!group) {
-//       return res.status(404).json({ success: false, error: "Grupo no encontrado" });
-//     }
-
-//     group.quotas++; // Aumentar en uno las quotas
-//     await group.save();
-
-//     res.status(200).json({ success: true, message: "Inscripción eliminada correctamente" });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, error: error.message });
-//   }
-// };

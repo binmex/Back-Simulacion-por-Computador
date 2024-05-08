@@ -1,8 +1,6 @@
 const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
 
-
-
 const { handleRequest } = require("../utils/requestHandler");
 
 exports.findAll = async (req, res) => {
@@ -14,7 +12,6 @@ exports.findAll = async (req, res) => {
     return { success: true, status: 200, data };
   });
 };
-
 
 exports.save = async (req, res) => {
   try {
@@ -42,11 +39,10 @@ exports.save = async (req, res) => {
     });
 
     if (existingGroup) {
-      return res
-        .status(409).json({
-          success: false,
-          error: `El ${req.body.grupo} de esa materia ya existe`,
-        });
+      return res.status(409).json({
+        success: false,
+        error: `El ${req.body.grupo} de esa materia ya existe`,
+      });
     }
 
     const newGroup = new Group({
