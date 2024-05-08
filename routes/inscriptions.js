@@ -102,60 +102,6 @@ router.post("/", saveInscription);
  */
 router.get("/:id", findByIdInscription);
 
-/**
- * 
- * /inscriptions/{objectId}:
- *   patch:
- *     tags:
- *       - Inscripciones
- *     description: Actualiza una inscripción por su ID
- *     parameters:
- *       - in: path
- *         name: objectId
- *         required: true
- *         schema:
- *           type: string
- *           format: objectId
- *           description: ID de la inscripción a actualizar (formato ObjectID de MongoDB)
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *                status:
- *                 type: string
- *                 enum: [Inscrito, No inscrito, Cancelado]
- *                 default: Inscrito
- *                 description: Estado de la inscripción
- *               student:
- *                 type: string
- *                 format: objectId
- *                 example: "6085e894932ec20015bbf017" # Ejemplo de un objectId de MongoDB
- *                 description: ID del estudiante
- *               topic:
- *                 type: string
- *                 format: objectId
- *                 example: "6085e894932ec20015bbf017" # Ejemplo de un objectId de MongoDB
- *                 description: ID de la materia
- *               registrationDate:
- *                 type: string
- *                 format: date
- *                 description: Fecha de inscripción (formato YYYY-MM-DD)
- *               
- *     responses:
- *       200:
- *         description: Éxito
- *       404:
- *         description: No encontrado
- *       400:
- *         description: Solicitud incorrecta
- *       500:
- *         description: Error del servidor
- */
-// router.patch("/:id", updateInscription);
-
 
 
 /**
