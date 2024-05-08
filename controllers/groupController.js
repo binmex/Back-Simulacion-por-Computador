@@ -1,18 +1,30 @@
 const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
 
+
+
+const { handleRequest } = require("../utils/requestHandler");
+
+exports.findAll = async (req, res) => {
+  handleRequest(res, async () => {
+    const data = await Group.find({});
+    if (data.length === 0) {
+      return { success: false, status: 404, message: "No encontrado" };
+    }
+    return { success: true, status: 200, data };
+  });
+};
+
+
 exports.save = async (req, res) => {
   try {
     const { topic } = req.body;
 
     if (!topic) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          error:
-            "El campo 'topic._id' es requerido en el cuerpo de la solicitud",
-        });
+      return res.status(400).json({
+        success: false,
+        error: "El campo 'topic._id' es requerido en el cuerpo de la solicitud",
+      });
     }
 
     const existingTopic = await Topic.findById(topic);
@@ -31,8 +43,7 @@ exports.save = async (req, res) => {
 
     if (existingGroup) {
       return res
-        .status(409)
-        .json({
+        .status(409).json({
           success: false,
           error: `El ${req.body.grupo} de esa materia ya existe`,
         });

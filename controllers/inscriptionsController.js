@@ -117,7 +117,7 @@ exports.saveInscription = async (req, res) => {
 exports.findAllInscription = async (req, res) => {
   try {
     const inscriptions = await Inscription.find({})
-      .populate("topic")
+      .populate("group")
       .populate("student");
     res.status(200).json({ success: true, data: inscriptions });
   } catch (error) {
@@ -130,7 +130,7 @@ exports.findByIdInscription = async (req, res) => {
   const { id } = req.params;
   try {
     const inscription = await Inscription.findById(id)
-      .populate("topic")
+      .populate("group")
       .populate("student");
     if (!inscription) {
       return res

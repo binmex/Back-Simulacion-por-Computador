@@ -2,9 +2,29 @@ const express = require("express");
 const router = express.Router();
 const {
   save,
+  findAll,
   findById,
   findByName,
 } = require("../controllers/groupController");
+
+
+
+/**
+ * @swagger
+ * /groups:
+ *   get:
+ *     tags:
+ *       - Grupos
+ *     description: Devuelve todas los grupos
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/", findAll);
 
 /**
  * @swagger
