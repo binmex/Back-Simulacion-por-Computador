@@ -67,7 +67,7 @@ router.get("/", findAllInscription);
  *               status:
  *                 type: string
  *                 enum: [Inscrito, No inscrito, Cancelado]
- *                 default: No inscrito
+ *                 default: Inscrito
  *                 description: Estado de la inscripción
  *     responses:
  *       200:
