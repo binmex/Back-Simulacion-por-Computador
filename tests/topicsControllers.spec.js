@@ -4,6 +4,26 @@ const Topic = require("../models/topic-model");
 const mongoose = require("../mongo/connect-db");
 
 jest.mock("../models/topic-model");
+let server;
+
+beforeAll((done) => {
+  server = app.listen(5000, () => {
+    done();
+  });
+});
+
+afterAll((done) => {
+  server.close(() => {
+    mongoose.connection.close()
+      .then(() => {
+        done();
+      })
+      .catch((error) => {
+        console.log('Failed to close the DB connection', error);
+        done();
+      });
+  });
+});
 
 describe("Topic Controller Tests", () => {
   describe("save function", () => {
@@ -78,9 +98,51 @@ describe("Topic Controller Tests", () => {
       expect(response.body.error).toBe(errorMessage);
     });
   });
+  describe("update function", () => {
+    test("test_update_success", async () => {
+      const mockTopic = {
+        id: 19,
+        name: "simss",
+        aula: "BINF-9",
+        credits: 4,
+        date_registration: "2020-09-21",
+        state: "activo",
+        quotas: 25,
+      };
+      const mockUpdateResponse = {
+        matchedCount: 1,
+        modifiedCount: 1,
+      };
+      Topic.updateOne.mockResolvedValue(mockUpdateResponse);
 
-  afterAll(async () => {
-    // Cierra la conexión a la base de datos
-    await mongoose.disconnect();
+      const response = await request(app).patch("/topics/1").send(mockTopic);
+
+      expect(response.status).toBe(200);
+      expect(response.body.success).toBe(true);
+      expect(response.body.data).toEqual(mockUpdateResponse);
+    });
+
+    test("test_update_noTopicFound", async () => {
+      const mockTopic = {
+        title: "Updated Topic",
+        description: "Updated topic description",
+      };
+      const mockUpdateResponse = {
+        matchedCount: 0,
+        modifiedCount: 0,
+      };
+      // Mock de la función updateOne para simular que no se encontró ningún tema para actualizar
+      Topic.updateOne.mockResolvedValue(mockUpdateResponse);
+
+      // Envía una solicitud para actualizar un tema que no se encuentra
+      const response = await request(app)
+        .patch("/topics/1") // Esta ruta puede variar según la configuración de tu aplicación
+        .send(mockTopic);
+
+      // Verifica que la respuesta sea la esperada
+      expect(response.status).toBe(404);
+      expect(response.body.success).toBe(false);
+      expect(response.body.message).toBe("No encontrado");
+    });
   });
 });

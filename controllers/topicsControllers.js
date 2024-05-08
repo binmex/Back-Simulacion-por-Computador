@@ -12,7 +12,14 @@ exports.update = async (req, res) => {
   const { id } = req.params;
   const updateInformation = req.body;
   handleRequest(res, async () => {
-    const data = await Topic.findByIdAndUpdate(id, updateInformation);
+    const data = await Topic.updateOne(
+      { id: id },
+      { $set: updateInformation }
+    );
+    if (data.matchedCount === 0) {
+      console.log("entro a la validacion");
+      return { success: false, status: 404, message: "No encontrado" };
+    }
     return { success: true, status: 200, data };
   });
 };
@@ -40,7 +47,6 @@ exports.findById = async (req, res) => {
 
 exports.findId = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   handleRequest(res, async () => {
     const data = await Topic.find({ id: id });
     if (!data) {
