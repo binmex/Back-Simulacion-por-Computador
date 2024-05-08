@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../index");
+const app = require("./server-tests");
 const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
 const mongoose = require("../mongo/connect-db");
@@ -9,23 +9,24 @@ jest.mock("../models/topic-model");
 let server;
 
 beforeAll((done) => {
-    server = app.listen(5000, () => {
-      done();
-    });
+  server = app.listen(6000, () => {
+    done();
   });
-  
-  afterAll((done) => {
-    server.close(() => {
-      mongoose.connection.close()
-        .then(() => {
-          done();
-        })
-        .catch((error) => {
-          console.log('Failed to close the DB connection', error);
-          done();
-        });
-    });
+});
+
+afterAll((done) => {
+  server.close(() => {
+    mongoose.connection
+      .close()
+      .then(() => {
+        done();
+      })
+      .catch((error) => {
+        console.log("Failed to close the DB connection", error);
+        done();
+      });
   });
+});
 
 describe("Group Controller Tests", () => {
   describe("save function", () => {

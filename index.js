@@ -1,6 +1,7 @@
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const { swaggerSpecs } = require("./utils/swagger");
+const cors = require("cors");
 
 require("dotenv").config();
 require("./mongo/connect-db");
@@ -11,6 +12,7 @@ const app = express();
 app.set("PORT", process.env.PORT || 4000);
 
 //middelware
+app.use(cors());
 app.use(express.json());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use("/topics", require("./routes/topics"));
