@@ -7,8 +7,6 @@ const {
   findByName,
 } = require("../controllers/groupController");
 
-
-
 /**
  * @swagger
  * /groups:

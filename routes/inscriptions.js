@@ -45,21 +45,15 @@ router.get("/", findAllInscription);
  *             type: object
  *             properties:
  *               student:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     format: objectId
- *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
- *                     description: ID del estudiante
+ *                 type: string
+ *                 format: objectId
+ *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                 description: ID del estudiante
  *               group:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     format: objectId
- *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
- *                     description: ID de la materia
+ *                 type: string
+ *                 format: objectId
+ *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                 description: ID de la materia
  *               registrationDate:
  *                 type: string
  *                 format: date
@@ -102,8 +96,6 @@ router.post("/", saveInscription);
  */
 router.get("/:id", findByIdInscription);
 
-
-
 /**
  * @swagger
  * /inscriptions/{objectId}:
@@ -123,34 +115,28 @@ router.get("/:id", findByIdInscription);
  *       required: true
  *       content:
  *         application/json:
- *           schema:
+ *            schema:
  *             type: object
  *             properties:
+ *               student:
+ *                 type: string
+ *                 format: objectId
+ *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                 description: ID del estudiante
+ *               group:
+ *                 type: string
+ *                 format: objectId
+ *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                 description: ID de la materia
+ *               registrationDate:
+ *                 type: string
+ *                 format: date
+ *                 description: Fecha de inscripción (formato YYYY-MM-DD)
  *               status:
  *                 type: string
  *                 enum: [Inscrito, No inscrito, Cancelado]
  *                 default: Inscrito
  *                 description: Estado de la inscripción
- *               student:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     format: objectId
- *                     example: "66327e8fee1040aa1479a86d" # Ejemplo de un objectId de MongoDB
- *                     description: ID del estudiante
- *               group:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     format: objectId
- *                     example: "663952cc8a5a363549c3020b" # Ejemplo de un objectId de MongoDB
- *                     description: ID del grupo
- *               registrationDate:
- *                 type: string
- *                 format: date
- *                 description: Fecha de inscripción (formato YYYY-MM-DD)
  *     responses:
  *       200:
  *         description: Éxito
