@@ -1,13 +1,13 @@
 {
-  "name": "actividad-1",
+  "name": "back-simulacion-por-computador",
   "version": "1.0.0",
-  "description": "",
+  "description": "Desarrollo de la API del Back del proyecto de Simulación por Computador",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node --watch index.js",
     "test": "npx jest"
   },
-  "author": "",
+  "author": "Robinson Aguilar, Julieth Becerra, Diana Díaz, Luis Pinto",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
@@ -20,7 +20,17 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "nodemon": "^3.1.0",
     "supertest": "^7.0.0"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/binmex/Back-Simulacion-por-Computador.git"
+  },
+  "bugs": {
+    "url": "https://github.com/binmex/Back-Simulacion-por-Computador/issues"
+  },
+  "homepage": "https://github.com/binmex/Back-Simulacion-por-Computador#readme"
 }
