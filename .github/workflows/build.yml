@@ -19,16 +19,20 @@ jobs:
       - name: Run Tests
         run: npm test -- --coverage  # O el comando que uses para ejecutar tus pruebas
 
-  sonarcloud:
-    name: SonarCloud
-    runs-on: ubuntu-latest
-    needs: test  # Asegúrate de que las pruebas se ejecuten antes de SonarCloud
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+ sonarcloud:
+  name: SonarCloud
+  runs-on: ubuntu-latest
+  needs: test # Asegúrate de que las pruebas se ejecuten antes de SonarCloud
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+    - name: Copy coverage report
+      run: |
+        mkdir -p coverage
+        cp ./tests/coverage/lcov.info ./coverage/lcov.info
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
