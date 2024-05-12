@@ -14,7 +14,7 @@ app.set("PORT", process.env.PORT || 4000);
 //middelware
 app.use(cors());
 app.use(express.json());
-app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api/docs", swaggerUi.serve, swaggerDocs);
 app.use("/topics", require("./routes/topics"));
 app.use("/groups", require("./routes/groups"));
 app.use("/inscriptions", require("./routes/inscriptions"));
