@@ -87,3 +87,30 @@ exports.findByName = async (req, res) => {
     return res.status(500).json({ state: false, error: error.message });
   }
 };
+
+exports.update = async (req, res) => {
+  const { id } = req.params;
+  const updateInformation = req.body;
+  try {
+    const group = await Group.findByIdAndUpdate(id, updateInformation, { new: true });
+    if (!group) {
+      return res.status(404).json({ state: false, message: "Grupo no encontrado" });
+    }
+    res.status(200).json({ state: true, data: group });
+  } catch (error) {
+    res.status(500).json({ state: false, error: error.message });
+  }
+};
+
+exports.deleteGroup = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const group = await Group.findByIdAndDelete(id);
+    if (!group) {
+      return res.status(404).json({ state: false, message: "Grupo no encontrado" });
+    }
+    res.status(200).json({ state: true, data: group });
+  } catch (error) {
+    res.status(500).json({ state: false, error: error.message });
+  }
+};
