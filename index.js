@@ -1,6 +1,6 @@
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
-const swagger = require("./utils/swagger");
+const swaggerDocs = require("./utils/swagger");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -14,7 +14,7 @@ app.set("PORT", process.env.PORT || 4000);
 //middelware
 app.use(cors());
 app.use(express.json());
-app.use("/api-docs", swaggerUi.serve, swagger);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 app.use("/topics", require("./routes/topics"));
 app.use("/groups", require("./routes/groups"));
 app.use("/inscriptions", require("./routes/inscriptions"));
