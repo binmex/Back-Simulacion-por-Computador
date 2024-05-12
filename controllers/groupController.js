@@ -65,9 +65,9 @@ const findName = async (req, res) => {
   try {
     const group = await Group.find({ name: name });
 
-    if (group.length === 0) {
+    if (!group || group.length === 0) {
       return res
-        .status(200)
+        .status(404)
         .json({ state: false, message: "Grupo no encontrado" });
     } else {
       return res.status(200).json({ state: true, data: group });

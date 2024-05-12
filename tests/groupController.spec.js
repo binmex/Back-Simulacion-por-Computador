@@ -57,8 +57,6 @@ describe("Group Controller Tests", () => {
       expect(response.body.success).toBe(true);
       expect(response.body.data).toEqual(mockGroup);
     });
-
-    // Add more tests for error cases, such as when the topic does not exist, or the group already exists
   });
 
   describe("findById function", () => {
@@ -66,7 +64,7 @@ describe("Group Controller Tests", () => {
       const groupId = "No hay data";
       Group.findById.mockResolvedValue(null);
 
-      const response = await request(app).get(`/groups/${groupId}`);
+      const response = await request(app).get(`/groups/byId/${groupId}`);
 
       expect(response.status).toBe(404);
       expect(response.body.state).toBe(false);
@@ -78,16 +76,16 @@ describe("Group Controller Tests", () => {
 
   describe("findByName function", () => {
     test("test_findByName_noGroupFound", async () => {
-      const groupName = "No hay data";
+      const groupName = "Algoritmoswq";
       Group.findOne.mockResolvedValue(null);
+      console.log(groupName);
 
-      const response = await request(app).get(`/groups/findOne`);
+      const response = await request(app).get(`/groups/name?name=${groupName}`);
+      console.log(response.body);
 
       expect(response.status).toBe(404);
       expect(response.body.state).toBe(false);
-      expect(response.body.message).toBe("No encontrado");
+      expect(response.body.message).toBe("Grupo no encontrado");
     });
-
-    // Add more tests for the successful case
   });
 });
