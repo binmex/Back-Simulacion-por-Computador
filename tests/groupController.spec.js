@@ -78,10 +78,8 @@ describe("Group Controller Tests", () => {
     test("test_findByName_noGroupFound", async () => {
       const groupName = "Algoritmoswq";
       Group.findOne.mockResolvedValue(null);
-      console.log(groupName);
 
       const response = await request(app).get(`/groups/name?name=${groupName}`);
-      console.log(response.body);
 
       expect(response.status).toBe(404);
       expect(response.body.state).toBe(false);
