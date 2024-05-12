@@ -1,7 +1,8 @@
 const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
 const path = require("path");
 
-const options = {
+const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
@@ -13,4 +14,10 @@ const options = {
   apis: [`${path.join(__dirname, "../routes/*.js")}`], // Rutas donde se encuentran los comentarios JSDoc
 };
 
-exports.swaggerSpecs = swaggerJsdoc(options);
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+
+const options = {
+  customCss: ".swagger-ui .topbar { display: none }",
+};
+
+module.exports = swaggerUi.setup(swaggerDocs, options);
