@@ -4,9 +4,9 @@ const {
   save,
   findAll,
   findById,
-  findByName,
+  findName,
   update,
-  deleteGroup
+  deleteGroup,
 } = require("../controllers/groupController");
 
 /**
@@ -15,7 +15,7 @@ const {
  *   get:
  *     tags:
  *       - Grupos
- *     description: Devuelve todas los grupos
+ *     description: Devuelve todos los grupos
  *     responses:
  *       200:
  *         description: Success
@@ -70,7 +70,7 @@ router.post("/", save);
 
 /**
  * @swagger
- * /groups/{objectId}:
+ * /groups/byId/{objectId}:
  *   get:
  *     tags:
  *       - Grupos
@@ -91,21 +91,22 @@ router.post("/", save);
  *       500:
  *         description: Error del servidor
  */
-router.get("/:id", findById);
+router.get("/byId/:id", findById);
 
 /**
  * @swagger
- * /groups/findOne:
+ * /groups/name:
  *   get:
  *     tags:
  *       - Grupos
- *     description: Encuentra un grupo por su nombre
+ *     description: Busca un grupo por su nombre
  *     parameters:
  *       - in: query
  *         name: name
- *         required: true
  *         schema:
  *           type: string
+ *         required: true
+ *         description: Nombre del grupo
  *     responses:
  *       200:
  *         description: Grupo encontrado con éxito
@@ -114,7 +115,7 @@ router.get("/:id", findById);
  *       500:
  *         description: Error del servidor
  */
-router.get("/findOne", findByName);
+router.get("/name", findName);
 
 /**
  * @swagger
@@ -127,6 +128,7 @@ router.get("/findOne", findByName);
  *       - in: path
  *         name: id
  *         required: true
+ *         example: "6085e894932ec20015bbf017"
  *         schema:
  *           type: string
  *           format: objectId
@@ -139,9 +141,11 @@ router.get("/findOne", findByName);
  *             properties:
  *               grupo:
  *                 type: string
+ *                 enum: [grupo1, grupo2, grupo3]
  *               topic:
  *                 type: string
  *                 format: objectId
+ *                 example: "6085e894932ec20015bbf017"
  *     responses:
  *       200:
  *         description: Grupo actualizado exitosamente
@@ -158,7 +162,7 @@ router.patch("/:id", update);
  *   delete:
  *     tags:
  *       - Grupos
- *     description: Elimina un grupo por su ID
+ *     description: Elimina un grupo por su ID (ObjectID)
  *     parameters:
  *       - in: path
  *         name: id
@@ -166,6 +170,7 @@ router.patch("/:id", update);
  *         schema:
  *           type: string
  *           format: objectId
+ *           example: "6085e894932ec20015bbf017" # Ejemplo de un objectId de MongoDB
  *     responses:
  *       200:
  *         description: Grupo eliminado exitosamente

@@ -3,7 +3,7 @@ const Topic = require("../models/topic-model");
 
 const { handleRequest } = require("../utils/requestHandler");
 
-exports.findAll = async (req, res) => {
+const findAll = async (req, res) => {
   handleRequest(res, async () => {
     const data = await Group.find({});
     if (data.length === 0) {
@@ -13,7 +13,7 @@ exports.findAll = async (req, res) => {
   });
 };
 
-exports.save = async (req, res) => {
+const save = async (req, res) => {
   try {
     const { topic } = req.body;
 
@@ -59,7 +59,25 @@ exports.save = async (req, res) => {
   }
 };
 
-exports.findById = async (req, res) => {
+const findName = async (req, res) => {
+  const { name } = req.query;
+
+  try {
+    const group = await Group.find({ name: name });
+
+    if (group.length === 0) {
+      return res
+        .status(200)
+        .json({ state: false, message: "Grupo no encontrado" });
+    } else {
+      return res.status(200).json({ state: true, data: group });
+    }
+  } catch (error) {
+    return res.status(500).json({ state: false, error: error.message });
+  }
+};
+
+const findById = async (req, res) => {
   const { id } = req.params;
   try {
     const group = await Group.findById(id);
@@ -72,29 +90,18 @@ exports.findById = async (req, res) => {
     return res.status(500).json({ state: false, error: error.message });
   }
 };
-exports.findByName = async (req, res) => {
-  const { name } = req.query;
+
+const update = async (req, res) => {
+  const { id } = req.params;
+  const updateInformation = req.body;
   try {
-    const group = await Group.findOne({ name });
+    const group = await Group.findByIdAndUpdate(id, updateInformation, {
+      new: true,
+    });
     if (!group) {
       return res
         .status(404)
         .json({ state: false, message: "Grupo no encontrado" });
-    } else {
-      return res.status(200).json({ state: true, data: group });
-    }
-  } catch (error) {
-    return res.status(500).json({ state: false, error: error.message });
-  }
-};
-
-exports.update = async (req, res) => {
-  const { id } = req.params;
-  const updateInformation = req.body;
-  try {
-    const group = await Group.findByIdAndUpdate(id, updateInformation, { new: true });
-    if (!group) {
-      return res.status(404).json({ state: false, message: "Grupo no encontrado" });
     }
     res.status(200).json({ state: true, data: group });
   } catch (error) {
@@ -102,15 +109,19 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.deleteGroup = async (req, res) => {
+const deleteGroup = async (req, res) => {
   const { id } = req.params;
   try {
     const group = await Group.findByIdAndDelete(id);
     if (!group) {
-      return res.status(404).json({ state: false, message: "Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ state: false, message: "Grupo no encontrado" });
     }
     res.status(200).json({ state: true, data: group });
   } catch (error) {
     res.status(500).json({ state: false, error: error.message });
   }
 };
+
+module.exports = { save, findAll, findById, findName, update, deleteGroup };
