@@ -5,6 +5,8 @@ const {
   findAll,
   findById,
   findByName,
+  update,
+  deleteGroup
 } = require("../controllers/groupController");
 
 /**
@@ -113,5 +115,65 @@ router.get("/:id", findById);
  *         description: Error del servidor
  */
 router.get("/findOne", findByName);
+
+/**
+ * @swagger
+ * /groups/{id}:
+ *   patch:
+ *     tags:
+ *       - Grupos
+ *     description: Actualiza un grupo por su ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: objectId
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               grupo:
+ *                 type: string
+ *               topic:
+ *                 type: string
+ *                 format: objectId
+ *     responses:
+ *       200:
+ *         description: Grupo actualizado exitosamente
+ *       404:
+ *         description: Grupo no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+router.patch("/:id", update);
+
+/**
+ * @swagger
+ * /groups/{id}:
+ *   delete:
+ *     tags:
+ *       - Grupos
+ *     description: Elimina un grupo por su ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: objectId
+ *     responses:
+ *       200:
+ *         description: Grupo eliminado exitosamente
+ *       404:
+ *         description: Grupo no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+router.delete("/:id", deleteGroup);
 
 module.exports = router;
