@@ -7,9 +7,22 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Aquí puedes agregar los pasos necesarios para preparar tu entorno de prueba
+      - name: Install Dependencies
+        run: npm install
+      # Ejecutar el comando para ejecutar tus pruebas
+      - name: Run Tests
+        run: npm test  # O el comando que uses para ejecutar tus pruebas
+
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
+    needs: test  # Asegúrate de que las pruebas se ejecuten antes de SonarCloud
     steps:
       - uses: actions/checkout@v3
         with:
