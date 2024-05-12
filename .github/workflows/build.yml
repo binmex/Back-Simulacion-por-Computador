@@ -17,7 +17,7 @@ jobs:
         run: npm install
       # Ejecutar el comando para ejecutar tus pruebas
       - name: Run Tests
-        run: npm test  # O el comando que uses para ejecutar tus pruebas
+        run: npm test -- --coverage  # O el comando que uses para ejecutar tus pruebas
 
   sonarcloud:
     name: SonarCloud
