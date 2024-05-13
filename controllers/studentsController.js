@@ -100,3 +100,21 @@ exports.deleteStudent = async (req, res) => {
     res.status(500).json({ state: false, error: err.message });
   }
 };
+
+exports.countDocumentsStudents = async (req, res) => {
+  try {
+    const countStudents = await Student.countDocuments();
+    const countStudentsNumber = parseInt(countStudents);
+    res.status(200).json({ success: true, countStudents: countStudentsNumber });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+    console.log(error);
+  }
+};
+
+
+
+
+
+
+

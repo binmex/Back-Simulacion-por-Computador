@@ -124,4 +124,13 @@ const deleteGroup = async (req, res) => {
   }
 };
 
-module.exports = { save, findAll, findById, findName, update, deleteGroup };
+const countDocuments = async (req, res) => {
+  try {
+    const count = await Group.countDocuments({});
+    res.status(200).json({ success: true, count });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+module.exports = { save, findAll, findById, findName, update, deleteGroup, countDocuments};

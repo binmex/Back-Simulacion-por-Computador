@@ -6,6 +6,7 @@ const {
   findId,
   findById,
   deleteStudent,
+  countDocumentsStudents,
 } = require("../controllers/studentsController");
 
 /**
@@ -63,7 +64,7 @@ routes.get("/", infoPaged);
 
 /**
  * @swagger
- * /students/{id}:
+ * /students/buscarId/{id}:
  *   get:
  *     tags:
  *       - Estudiantes
@@ -80,7 +81,7 @@ routes.get("/", infoPaged);
  *       404:
  *         description: Not found
  */
-routes.get("/:id", findId);
+routes.get("/buscarId/:id", findId);
 
 /**
  * @swagger
@@ -219,5 +220,21 @@ routes.patch("/:id", update);
  *         description: Not found
  */
 routes.delete("/:id", deleteStudent);
+
+/**
+ * @swagger
+ * /students/countStudents:
+ *   get:
+ *     tags:
+ *       - Estudiantes
+ *     description: Obtiene la cantidad total de estudiantes
+ *     responses:
+ *       200:
+ *         description: Éxito
+ *       500:
+ *         description: Error del servidor
+ */
+routes.get("/countStudents", countDocumentsStudents);
+
 
 module.exports = routes;

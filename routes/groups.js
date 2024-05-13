@@ -7,6 +7,7 @@ const {
   findName,
   update,
   deleteGroup,
+  countDocuments,
 } = require("../controllers/groupController");
 
 /**
@@ -180,5 +181,20 @@ router.patch("/:id", update);
  *         description: Error del servidor
  */
 router.delete("/:id", deleteGroup);
+
+/**
+ * @swagger
+ * /groups/count:
+ *   get:
+ *     tags:
+ *       - Grupos
+ *     description: Devuelve la cantidad de grupos
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/count", countDocuments);
 
 module.exports = router;
