@@ -192,17 +192,18 @@ exports.saveInscription = async (req, res) => {
       return res.status(404).json({ success: false, error: "Grupo no encontrado" });
     }
 
-    // Vrificar si el estudiante ya está inscrito en el grupo
-    const existingInscription = await Inscription.findOne({ student: student._id, group: group._id });
-    if (existingInscription) {
-      return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este grupo" });
+        // Verificar si hay cupos disponibles en el grupo original
+        const originalGroup = await Group.findById(groupId);
+        if (!originalGroup) {
+          return res.status(404).json({ success: false, error: "Grupo no encontrado" });
     }
 
     // el estudiante ya está inscrito en algun< otro grupo de la misma materia
     const topicGroups = await Group.find({ topic: targetGroup.topic }).populate('topic');
 
     for (const topicGroup of topicGroups) {
-      const existingInscription = await Inscription.findOne({ student: student._id, group: topicGroup._id });
+      const existingInscription = await Inscription.findOne({ 
+        student: student._id, group: topicGroup._id });
       if (existingInscription) {
         return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en otro grupo de la misma materia" });
       }
