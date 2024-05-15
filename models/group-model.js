@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const SchemaGroup = new Schema({
-  grupo: {
+  group: {
     type: String,
     enum: ["grupo1", "grupo2", "grupo3"],
     required: true,

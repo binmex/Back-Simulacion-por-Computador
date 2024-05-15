@@ -1,21 +1,27 @@
 const Topic = require("../models/topic-model");
+const Group = require("../models/group-model");
 const { handleRequest } = require("../utils/requestHandler");
 
 exports.save = async (req, res) => {
   handleRequest(res, async () => {
     const newTopic = new Topic(req.body);
     const data = await newTopic.save();
+    const group = new Group({
+      group: "grupo1",
+      name: newTopic.name,
+      topic: newTopic._id,
+      quotas: newTopic.quotas,
+    });
+    await group.save();
     return { success: true, status: 200, data };
   });
 };
+
 exports.update = async (req, res) => {
   const { id } = req.params;
   const updateInformation = req.body;
   handleRequest(res, async () => {
-    const data = await Topic.updateOne(
-      { id: id },
-      { $set: updateInformation }
-    );
+    const data = await Topic.updateOne({ id: id }, { $set: updateInformation });
     if (data.matchedCount === 0) {
       console.log("entro a la validacion");
       return { success: false, status: 404, message: "No encontrado" };
