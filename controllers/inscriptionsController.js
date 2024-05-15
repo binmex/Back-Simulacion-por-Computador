@@ -183,6 +183,7 @@ const Topic = require("../models/topic-model");
 //     res.status(500).json({ success: false, error: error.message });
 //   }
 // };
+
 exports.saveInscription = async (req, res) => {
   try {
     const { student, group, registrationDate, status } = req.body;

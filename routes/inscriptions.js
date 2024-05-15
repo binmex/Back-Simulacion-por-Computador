@@ -31,7 +31,7 @@ const {
 router.get("/", findAllInscription);
 
 /**
- * @swagger
+ *@swagger
  * /inscriptions:
  *   post:
  *     tags:
@@ -45,15 +45,22 @@ router.get("/", findAllInscription);
  *             type: object
  *             properties:
  *               student:
- *                 type: string
- *                 format: objectId
- *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
- *                 description: ID del estudiante
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     format: objectId
+ *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                     description: ID del estudiante
  *               group:
- *                 type: string
- *                 format: objectId
- *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
- *                 description: ID de la materia
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     format: objectId
+ *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                     description: ID de la materia
+ * 
  *               registrationDate:
  *                 type: string
  *                 format: date
@@ -64,12 +71,13 @@ router.get("/", findAllInscription);
  *                 default: Inscrito
  *                 description: Estado de la inscripción
  *     responses:
- *       200:
- *         description: Success
- *       500:
+ *       '200':
+ *         description: Éxito
+ *       '500':
  *         description: Error del servidor
  */
 router.post("/", saveInscription);
+
 
 /**
  * @swagger
@@ -119,15 +127,22 @@ router.get("/:id", findByIdInscription);
  *             type: object
  *             properties:
  *               student:
- *                 type: string
- *                 format: objectId
- *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
- *                 description: ID del estudiante
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     format: objectId
+ *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                     description: ID del estudiante
  *               group:
- *                 type: string
- *                 format: objectId
- *                 example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
- *                 description: ID de la materia
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     format: objectId
+ *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
+ *                     description: ID de la materia
+ * 
  *               registrationDate:
  *                 type: string
  *                 format: date
