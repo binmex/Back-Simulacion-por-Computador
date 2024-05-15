@@ -50,7 +50,7 @@ router.get("/", findAll);
  *             properties:
  *               grupo:
  *                 type: string
- *                 enum: [grupo1, grupo2, grupo3]
+ *                 enum: [grupo 60, grupo 62, grupo 63]
  *               topic:
  *                 type: string
  *                 format: ObjectId
@@ -142,7 +142,7 @@ router.get("/name", findName);
  *             properties:
  *               grupo:
  *                 type: string
- *                 enum: [grupo1, grupo2, grupo3]
+ *                 enum: [grupo 60, grupo 61, grupo 62]
  *               topic:
  *                 type: string
  *                 format: objectId

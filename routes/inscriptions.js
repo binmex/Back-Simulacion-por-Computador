@@ -65,11 +65,7 @@ router.get("/", findAllInscription);
  *                 type: string
  *                 format: date
  *                 description: Fecha de inscripción (formato YYYY-MM-DD)
- *               status:
- *                 type: string
- *                 enum: [Inscrito, No inscrito, Cancelado]
- *                 default: Inscrito
- *                 description: Estado de la inscripción
+ *         
  *     responses:
  *       '200':
  *         description: Éxito

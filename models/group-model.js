@@ -8,7 +8,7 @@ const SchemaGroup = new Schema({
     },
     grupo: {
         type: String,
-        enum: ["grupo1","grupo2","grupo3"],
+        enum: ["grupo 60","grupo 61","grupo 62"],
         required: true,   
     },
     

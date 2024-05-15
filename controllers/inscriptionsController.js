@@ -45,10 +45,10 @@ exports.saveInscription = async (req, res) => {
         // Crear un nuevo grupo para la materia
         const lastGroup = await Group.findOne({ topic: originalTopic._id }).sort({ grupo: -1 });
 
-        let newGroupName = "grupo1";
+        let newGroupName = "grupo 60";
         if (lastGroup) {
-          const lastGroupNumber = parseInt(lastGroup.grupo.replace("grupo", ""));
-          newGroupName = `grupo${lastGroupNumber + 1}`;
+          const lastGroupNumber = parseInt(lastGroup.grupo.replace("grupo ", ""));
+          newGroupName = `grupo ${lastGroupNumber + 1}`;
         }
 
         const newGroup = new Group({
