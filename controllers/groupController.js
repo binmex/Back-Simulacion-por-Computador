@@ -133,4 +133,12 @@ const countDocuments = async (req, res) => {
   }
 };
 
-module.exports = { save, findAll, findById, findName, update, deleteGroup, countDocuments};
+module.exports = {
+  save,
+  findAll,
+  findById,
+  findName,
+  update,
+  deleteGroup,
+  countDocuments,
+};

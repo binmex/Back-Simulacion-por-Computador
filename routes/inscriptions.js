@@ -32,7 +32,7 @@ router.get("/", findAllInscription);
 
 /**
  *@swagger
- * /inscriptions:
+ * /inscriptions/save:
  *   post:
  *     tags:
  *       - Inscripciones
@@ -60,24 +60,23 @@ router.get("/", findAllInscription);
  *                     format: objectId
  *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
  *                     description: ID de la materia
- * 
+ *
  *               registrationDate:
  *                 type: string
  *                 format: date
  *                 description: Fecha de inscripción (formato YYYY-MM-DD)
- *         
+ *
  *     responses:
  *       '200':
  *         description: Éxito
  *       '500':
  *         description: Error del servidor
  */
-router.post("/", saveInscription);
-
+router.post("/save", saveInscription);
 
 /**
  * @swagger
- * /inscriptions/{objectId}:
+ * /inscriptions/findById/{objectId}:
  *   get:
  *     tags:
  *       - Inscripciones
@@ -98,11 +97,11 @@ router.post("/", saveInscription);
  *       500:
  *         description: Error del servidor
  */
-router.get("/:id", findByIdInscription);
+router.get("/findById/:id", findByIdInscription);
 
 /**
  * @swagger
- * /inscriptions/{objectId}:
+ * /inscriptions/update/{objectId}:
  *   patch:
  *     tags:
  *       - Inscripciones
@@ -138,7 +137,7 @@ router.get("/:id", findByIdInscription);
  *                     format: objectId
  *                     example: "66327e8fee1040aa1479a85d" # Ejemplo de un objectId de MongoDB
  *                     description: ID de la materia
- * 
+ *
  *               registrationDate:
  *                 type: string
  *                 format: date
@@ -158,10 +157,10 @@ router.get("/:id", findByIdInscription);
  *       500:
  *         description: Error del servidor
  */
-router.patch("/:id", updateInscription);
+router.patch("/update/:id", updateInscription);
 /**
  * @swagger
- * /inscriptions/{objectId}:
+ * /inscriptions/delete/{objectId}:
  *   delete:
  *     tags:
  *       - Inscripciones
@@ -182,6 +181,6 @@ router.patch("/:id", updateInscription);
  *       500:
  *         description: Error del servidor
  */
-router.delete("/:id", deleteInscription);
+router.delete("/delete/:id", deleteInscription);
 
 module.exports = router;

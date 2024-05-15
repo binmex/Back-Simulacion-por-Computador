@@ -236,5 +236,4 @@ routes.delete("/:id", deleteStudent);
  */
 routes.get("/countStudents", countDocumentsStudents);
 
-
 module.exports = routes;

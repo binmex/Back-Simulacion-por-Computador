@@ -9,7 +9,9 @@ exports.saveInscription = async (req, res) => {
     // Verificar si hay cupos disponibles en el grupo original
     const originalGroup = await Group.findById(groupId);
     if (!originalGroup) {
-      return res.status(404).json({ success: false, error: "Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Grupo no encontrado" });
     }
 
     if (originalGroup.quotas > 0) {
@@ -30,12 +32,14 @@ exports.saveInscription = async (req, res) => {
       // Buscar el siguiente grupo disponible especificamente para la materia del grupo original
       const originalTopic = await Topic.findById(originalGroup.topic);
       if (!originalTopic) {
-        return res.status(404).json({ success: false, error: "materia no encontrada" });
+        return res
+          .status(404)
+          .json({ success: false, error: "materia no encontrada" });
       }
 
-      const availableGroups = await Group.find({ 
+      const availableGroups = await Group.find({
         topic: originalTopic._id,
-        quotas: { $gt: 0 } 
+        quotas: { $gt: 0 },
       }).sort({ grupo: 1 });
 
       let targetGroup;
@@ -43,11 +47,15 @@ exports.saveInscription = async (req, res) => {
         targetGroup = availableGroups[0];
       } else {
         // Crear un nuevo grupo para la materia
-        const lastGroup = await Group.findOne({ topic: originalTopic._id }).sort({ grupo: -1 });
+        const lastGroup = await Group.findOne({
+          topic: originalTopic._id,
+        }).sort({ grupo: -1 });
 
         let newGroupName = "grupo 60";
         if (lastGroup) {
-          const lastGroupNumber = parseInt(lastGroup.grupo.replace("grupo ", ""));
+          const lastGroupNumber = parseInt(
+            lastGroup.grupo.replace("grupo ", "")
+          );
           newGroupName = `grupo ${lastGroupNumber + 1}`;
         }
 
@@ -81,7 +89,6 @@ exports.saveInscription = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 
 exports.findAllInscription = async (req, res) => {
   try {
@@ -135,27 +142,30 @@ exports.updateInscription = async (req, res) => {
 };
 
 exports.deleteInscription = async (req, res) => {
-
   const { id } = req.params;
   try {
-
     const inscription = await Inscription.findById(id);
     if (!inscription) {
-      return res.status(404).json({ success: false, error: "Inscripción no encontrada" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Inscripción no encontrada" });
     }
 
     await Inscription.findByIdAndDelete(id);
 
-
     const group = await Group.findById(inscription.group);
     if (!group) {
-      return res.status(404).json({ success: false, error: "Grupo no encontrado" });
+      return res
+        .status(404)
+        .json({ success: false, error: "Grupo no encontrado" });
     }
 
     group.quotas++;
     await group.save();
 
-    res.status(200).json({ success: true, message: "Inscripción eliminada correctamente" });
+    res
+      .status(200)
+      .json({ success: true, message: "Inscripción eliminada correctamente" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });

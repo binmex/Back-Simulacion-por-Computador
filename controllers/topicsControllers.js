@@ -7,7 +7,7 @@ exports.save = async (req, res) => {
     const newTopic = new Topic(req.body);
     const data = await newTopic.save();
     const group = new Group({
-      group: "grupo1",
+      group: "grupo 60",
       name: newTopic.name,
       topic: newTopic._id,
       quotas: newTopic.quotas,
