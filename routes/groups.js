@@ -8,6 +8,7 @@ const {
   update,
   deleteGroup,
   countDocuments,
+  checkAndCreateGroup
 } = require("../controllers/groupController");
 
 /**
@@ -196,5 +197,20 @@ router.delete("/:id", deleteGroup);
  *         description: Error del servidor
  */
 router.get("/count", countDocuments);
+
+/**
+ * @swagger
+ * /groups/check-and-create-group:
+ *   post:
+ *     tags:
+ *       - Grupos
+ *     description: Verifica todas las materias y crea el grupo 60 si no existe
+ *     responses:
+ *       200:
+ *         description: Grupos verificados y creados si no existían
+ *       500:
+ *         description: Error del servidor
+ */
+router.post("/check-and-create-group", checkAndCreateGroup);
 
 module.exports = router;

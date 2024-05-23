@@ -6,6 +6,8 @@ const {
   findByIdInscription,
   updateInscription,
   deleteInscription,
+  findStudentsByTopic,
+  findStudentsByTopicAndGroup,
 } = require("../controllers/inscriptionsController");
 
 /**
@@ -182,5 +184,60 @@ router.patch("/update/:id", updateInscription);
  *         description: Error del servidor
  */
 router.delete("/delete/:id", deleteInscription);
+
+/**
+ * @swagger
+ * /inscriptions/studentsByTopic/{topicId}:
+ *   get:
+ *     tags:
+ *       - Inscripciones
+ *     description: Devuelve todos los estudiantes inscritos en una materia específica
+ *     parameters:
+ *       - in: path
+ *         name: topicId
+ *         required: true
+ *         description: ID de la materia
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Éxito, devuelve la lista de estudiantes inscritos
+ *       404:
+ *         description: No se encontraron estudiantes inscritos en la materia especificada
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/studentsByTopic/:topicId", findStudentsByTopic);
+
+/**
+ * @swagger
+ * /inscriptions/ByTopicAndGroup/{topicId}/{groupId}:
+ *   get:
+ *     tags:
+ *       - Inscripciones
+ *     description: Devuelve todos los estudiantes inscritos en una materia específica y un grupo específico
+ *     parameters:
+ *       - in: path
+ *         name: topicId
+ *         required: true
+ *         description: ID de la materia
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: groupId
+ *         required: true
+ *         description: ID del grupo
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Éxito, devuelve la lista de estudiantes inscritos
+ *       404:
+ *         description: No se encontraron estudiantes inscritos en la materia y grupo especificados
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/ByTopicAndGroup/:topicId/:groupId", findStudentsByTopicAndGroup);
+
 
 module.exports = router;

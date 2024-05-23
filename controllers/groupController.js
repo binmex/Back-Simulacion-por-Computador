@@ -133,6 +133,27 @@ const countDocuments = async (req, res) => {
   }
 };
 
+const checkAndCreateGroup = async (req, res) => {
+  try {
+    const topics = await Topic.find({});
+    for (const topic of topics) {
+      const group = await Group.findOne({ topic: topic._id, grupo: "grupo 60" });
+      if (!group) {
+        const newGroup = new Group({
+          grupo: "grupo 60",
+          name: topic.name,
+          topic: topic._id,
+          quotas: topic.quotas,
+        });
+        await newGroup.save();
+      }
+    }
+    res.status(200).json({ success: true, message: "Grupos verificados y creados si no existían" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 module.exports = {
   save,
   findAll,
@@ -141,4 +162,5 @@ module.exports = {
   update,
   deleteGroup,
   countDocuments,
+  checkAndCreateGroup,
 };
