@@ -1,10 +1,11 @@
 const Inscription = require("../models/inscription-model");
 const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
+const mongoose = require("mongoose");
 
 exports.saveInscription = async (req, res) => {
   try {
-    const { student, group: groupId, registrationDate, status } = req.body;
+    const { student, group: groupId, registrationDate } = req.body;
 
     // Verificar si hay cupos disponibles en el grupo original
     const originalGroup = await Group.findById(groupId);
@@ -15,12 +16,11 @@ exports.saveInscription = async (req, res) => {
     }
 
     if (originalGroup.quotas > 0) {
-      // Si hay cupos disponibles en el grupo original, inscribir al estudiante en ese grupo
       const newInscription = new Inscription({
         student: student._id,
         group: groupId,
         registrationDate,
-        status,
+        status: "Inscrito",
       });
 
       await newInscription.save();
@@ -172,18 +172,26 @@ exports.deleteInscription = async (req, res) => {
   }
 };
 
-
 exports.findStudentsByTopic = async (req, res) => {
   const { topicId } = req.params;
   try {
-    const groups = await Group.find({ topic: topicId }).select('_id');
-    const groupIds = groups.map(group => group._id);
-    const inscriptions = await Inscription.find({ 
+    const groups = await Group.find({ topic: topicId }).select("_id");
+    const groupIds = groups.map((group) => group._id);
+    const inscriptions = await Inscription.find({
       group: { $in: groupIds },
-      status: "Inscrito" // Filtrar por estado "Inscrito"
-    })
-      .populate('student');
-    const students = inscriptions.map(inscription => inscription.student);
+      status: "Inscrito", // Filtrar por estado "Inscrito"
+    }).populate("student");
+    const students = inscriptions.map((inscription) => inscription.student);
+
+    if (students.length === 0) {
+      return res
+        .status(404)
+        .json({
+          success: false,
+          error: "No se encontraron estudiantes para el tema especificado",
+        });
+    }
+
     res.status(200).json({ success: true, data: students });
   } catch (error) {
     console.error(error);
@@ -191,32 +199,34 @@ exports.findStudentsByTopic = async (req, res) => {
   }
 };
 
-
-const mongoose = require('mongoose');
-
 exports.findStudentsByTopicAndGroup = async (req, res) => {
-  const { topicId, groupId } = req.params;
+  const { topicId, groupId } = req.query;
   // Validar si groupId es un ObjectId válido
   if (!mongoose.Types.ObjectId.isValid(groupId)) {
-    return res.status(400).json({ success: false, error: "El ID del grupo no es válido" });
+    return res
+      .status(400)
+      .json({ success: false, error: "El ID del grupo no es válido" });
   }
 
   try {
     const group = await Group.findOne({ _id: groupId, topic: topicId });
     if (!group) {
-      return res.status(404).json({ success: false, error: "Grupo no encontrado para la materia especificada" });
+      return res
+        .status(404)
+        .json({
+          success: false,
+          error: "Grupo no encontrado para la materia especificada",
+        });
     }
-
-    const inscriptions = await Inscription.find({ 
+    
+    const inscriptions = await Inscription.find({
       group: groupId,
-      status: "Inscrito" // Filtrar por estado "Inscrito"
-    })
-      .populate('student');
-    const students = inscriptions.map(inscription => inscription.student);
+      status: "Inscrito", // Filtrar por estado "Inscrito"
+    }).populate("student");
+    const students = inscriptions.map((inscription) => inscription.student);
     res.status(200).json({ success: true, data: students });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
-

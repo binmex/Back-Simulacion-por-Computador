@@ -211,19 +211,19 @@ router.get("/studentsByTopic/:topicId", findStudentsByTopic);
 
 /**
  * @swagger
- * /inscriptions/ByTopicAndGroup/{topicId}/{groupId}:
+ * /inscriptions/ByTopicAndGroup:
  *   get:
  *     tags:
  *       - Inscripciones
  *     description: Devuelve todos los estudiantes inscritos en una materia específica y un grupo específico
  *     parameters:
- *       - in: path
+ *       - in: query
  *         name: topicId
  *         required: true
  *         description: ID de la materia
  *         schema:
  *           type: string
- *       - in: path
+ *       - in: query
  *         name: groupId
  *         required: true
  *         description: ID del grupo
@@ -237,7 +237,6 @@ router.get("/studentsByTopic/:topicId", findStudentsByTopic);
  *       500:
  *         description: Error del servidor
  */
-router.get("/ByTopicAndGroup/:topicId/:groupId", findStudentsByTopicAndGroup);
-
+router.get("/ByTopicAndGroup", findStudentsByTopicAndGroup);
 
 module.exports = router;
