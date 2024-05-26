@@ -6,6 +6,7 @@ const {
   findId,
   findById,
   deleteTopic,
+  findGroupsByTopicId,
 } = require("../controllers/topicsControllers");
 
 /**
@@ -202,5 +203,30 @@ routes.patch("/:id", update);
  *         description: Error del servidor
  */
 routes.delete("/:id", deleteTopic);
+
+/**
+ * @swagger
+ * /topics/groups/{objectId}:
+ *   get:
+ *     tags:
+ *       - Materias
+ *     description: Obtiene los grupos de una materia por su ID
+ *     parameters:
+ *       - in: path
+ *         name: objectId
+ *         required: true
+ *         schema:
+ *           type: string
+*           format: objectId
+*           example: "6085e894932ec20015bbf017"
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Error del servidor
+ */
+routes.get("/groups/:id", findGroupsByTopicId);
 
 module.exports = routes;

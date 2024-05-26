@@ -69,3 +69,14 @@ exports.deleteTopic = async (req, res) => {
     return { success: true, status: 200, data };
   });
 };
+
+exports.findGroupsByTopicId = async (req, res) => {
+  const { id } = req.params;
+  handleRequest(res, async () => {
+    const data = await Group.find({ topic: id });
+    if (data.length === 0) {
+      return { success: false, status: 404, message: "No se encontraron grupos para esta materia" };
+    }
+    return { success: true, status: 200, data };
+  });
+};
