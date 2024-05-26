@@ -7,6 +7,7 @@ const {
   findById,
   deleteStudent,
   countDocumentsStudents,
+  findCode,
 } = require("../controllers/studentsController");
 
 /**
@@ -61,6 +62,30 @@ const {
  *         description: Error del servidor
  */
 routes.get("/", infoPaged);
+
+/**
+ * @swagger
+ * /students/findCode:
+ *   get:
+ *     tags:
+ *       - Estudiantes
+ *     description: Busca un estudiante por su código
+ *     parameters:
+ *       - in: query
+ *         name: code
+ *         schema:
+ *           type: Number
+ *         required: true
+ *         description: Código del estudiante
+ *     responses:
+ *       200:
+ *         description: Éxito
+ *       404:
+ *         description: Estudiante no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+routes.get("/findCode", findCode);
 
 /**
  * @swagger

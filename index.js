@@ -29,7 +29,7 @@ app.use("/inscriptions", require("./routes/inscriptions"));
 app.use("/students", require("./routes/students"));
 
 app.use("/", (req, res) =>
-  res.send("Back de la actividad número 1 de Simulación por Computadores")
+  res.send("Back del proyecto de Simulación por Computadores")
 );
 
 app.listen(app.get("PORT"), () =>

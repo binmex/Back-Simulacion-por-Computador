@@ -90,6 +90,20 @@ exports.findId = async (req, res) => {
   }
 };
 
+exports.findCode = async (req, res) => {
+  const { code } = req.query;
+  try {
+    const data = await Student.find({ code: code });
+    if (data.length === 0) {
+      res.status(404).json({ state: "Usuario no encontrado" });
+    } else {
+      res.status(200).json({ state: true, data: data });
+    }
+  } catch (err) {
+    res.status(500).json({ state: false, error: err.message });
+  }
+};
+
 exports.deleteStudent = async (req, res) => {
   const { id } = req.params;
 
@@ -111,10 +125,3 @@ exports.countDocumentsStudents = async (req, res) => {
     console.log(error);
   }
 };
-
-
-
-
-
-
-
