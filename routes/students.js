@@ -73,9 +73,9 @@ routes.get("/", infoPaged);
  *     parameters:
  *       - in: query
  *         name: code
- *         schema:
- *           type: Number
  *         required: true
+ *         schema:
+ *           type: number
  *         description: Código del estudiante
  *     responses:
  *       200:
