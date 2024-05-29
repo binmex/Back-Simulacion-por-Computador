@@ -8,6 +8,7 @@ const {
   deleteInscription,
   findStudentsByTopic,
   findStudentsByTopicAndGroup,
+  findInscriptionsByStudent,
 } = require("../controllers/inscriptionsController");
 
 /**
@@ -100,6 +101,31 @@ router.post("/save", saveInscription);
  *         description: Error del servidor
  */
 router.get("/findById/:id", findByIdInscription);
+
+/**
+ * @swagger
+ * /inscriptions/findIsncriptionsByStudent/{studentId}:
+ *   get:
+ *     tags:
+ *       - Inscripciones
+ *     description: Busca las inscripciones de un estudiante por su ObjectId de MongoDB
+ *     parameters:
+ *       - in: path
+ *         name: studentId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: objectId
+ *           example: "6085e894932ec20015bbf017" # Ejemplo de un objectId de MongoDB
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/findIsncriptionsByStudent/:studentId", findInscriptionsByStudent);
 
 /**
  * @swagger

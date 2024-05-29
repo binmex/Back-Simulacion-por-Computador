@@ -120,6 +120,24 @@ exports.findByIdInscription = async (req, res) => {
   }
 };
 
+exports.findInscriptionsByStudent = async (req, res) => {
+  const { studentId } = req.params;
+  try {
+    const inscriptions = await Inscription.find({ student: studentId })
+      .populate("group")
+      .populate("student");
+    if (!inscriptions || inscriptions.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Inscripciones no encontradas" });
+    }
+    res.status(200).json({ success: true, data: inscriptions });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
 exports.updateInscription = async (req, res) => {
   const { id } = req.params;
   const updateData = req.body;
@@ -184,12 +202,10 @@ exports.findStudentsByTopic = async (req, res) => {
     const students = inscriptions.map((inscription) => inscription.student);
 
     if (students.length === 0) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          error: "No se encontraron estudiantes para el tema especificado",
-        });
+      return res.status(404).json({
+        success: false,
+        error: "No se encontraron estudiantes para el tema especificado",
+      });
     }
 
     res.status(200).json({ success: true, data: students });
@@ -211,14 +227,12 @@ exports.findStudentsByTopicAndGroup = async (req, res) => {
   try {
     const group = await Group.findOne({ _id: groupId, topic: topicId });
     if (!group) {
-      return res
-        .status(404)
-        .json({
-          success: false,
-          error: "Grupo no encontrado para la materia especificada",
-        });
+      return res.status(404).json({
+        success: false,
+        error: "Grupo no encontrado para la materia especificada",
+      });
     }
-    
+
     const inscriptions = await Inscription.find({
       group: groupId,
       status: "Inscrito", // Filtrar por estado "Inscrito"
