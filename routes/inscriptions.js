@@ -9,6 +9,7 @@ const {
   findStudentsByTopic,
   findStudentsByTopicAndGroup,
   findInscriptionsByStudent,
+  findStudentsByGroup,
 } = require("../controllers/inscriptionsController");
 
 /**
@@ -264,5 +265,30 @@ router.get("/studentsByTopic/:topicId", findStudentsByTopic);
  *         description: Error del servidor
  */
 router.get("/ByTopicAndGroup", findStudentsByTopicAndGroup);
+
+
+/**
+ * @swagger
+ * /inscriptions/ByGroup:
+ *   get:
+ *     tags:
+ *       - Inscripciones
+ *     description: Devuelve todos los estudiantes inscritos en un grupo específico
+ *     parameters:
+ *       - in: query
+ *         name: groupId
+ *         required: true
+ *         description: ID del grupo
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Éxito, devuelve la lista de estudiantes inscritos
+ *       404:
+ *         description: No se encontraron estudiantes inscritos en la materia y grupo especificados
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/ByGroup", findStudentsByGroup);
 
 module.exports = router;

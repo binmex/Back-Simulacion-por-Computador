@@ -244,3 +244,33 @@ exports.findStudentsByTopicAndGroup = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+exports.findStudentsByGroup = async (req, res) => {
+  const { groupId } = req.query;
+
+  // Validar si groupId es un ObjectId válido
+  if (!mongoose.Types.ObjectId.isValid(groupId)) {
+    return res
+      .status(400)
+      .json({ success: false, error: "El ID del grupo no es válido" });
+  }
+
+  try {
+    const group = await Group.findById(groupId);
+    if (!group) {
+      return res.status(404).json({
+        success: false,
+        error: "Grupo no encontrado",
+      });
+    }
+
+    const inscriptions = await Inscription.find({
+      group: groupId,
+      status: "Inscrito", // Filtrar por estado "Inscrito"
+    }).populate("student");
+    const students = inscriptions.map((inscription) => inscription.student);
+    res.status(200).json({ success: true, data: students });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
