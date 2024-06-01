@@ -7,14 +7,12 @@ exports.saveInscription = async (req, res) => {
   try {
     const { student, group: groupId, registrationDate } = req.body;
 
-    // Verificar si hay cupos disponibles en el grupo original
     const originalGroup = await Group.findById(groupId);
     if (!originalGroup) {
       return res
         .status(404)
         .json({ success: false, error: "Grupo no encontrado" });
     }
-
     if (originalGroup.quotas > 0) {
       const newInscription = new Inscription({
         student: student._id,
@@ -23,18 +21,24 @@ exports.saveInscription = async (req, res) => {
         status: "Inscrito",
       });
 
+      originalGroup.quotas = Math.max(originalGroup.quotas - 1, 0);
+
       await newInscription.save();
-      originalGroup.quotas--; // Decrementar los cupos disponibles en el grupo original
       await originalGroup.save();
 
       return res.status(201).json({ success: true, data: newInscription });
     } else {
-      // Buscar el siguiente grupo disponible especificamente para la materia del grupo original
       const originalTopic = await Topic.findById(originalGroup.topic);
       if (!originalTopic) {
         return res
           .status(404)
           .json({ success: false, error: "materia no encontrada" });
+      }
+
+      if (originalTopic.quotas === 0) {
+        return res
+          .status(400)
+          .json({ success: false, error: "Error de cupos en las materias" });
       }
 
       const availableGroups = await Group.find({
@@ -46,7 +50,6 @@ exports.saveInscription = async (req, res) => {
       if (availableGroups.length > 0) {
         targetGroup = availableGroups[0];
       } else {
-        // Crear un nuevo grupo para la materia
         const lastGroup = await Group.findOne({
           topic: originalTopic._id,
         }).sort({ grupo: -1 });
@@ -70,7 +73,6 @@ exports.saveInscription = async (req, res) => {
         targetGroup = newGroup;
       }
 
-      // Inscribir al estudiante en el grupo alternativo
       const newInscription = new Inscription({
         student: student._id,
         group: targetGroup._id,
@@ -78,8 +80,9 @@ exports.saveInscription = async (req, res) => {
         status: "Inscrito",
       });
 
+      targetGroup.quotas = Math.max(targetGroup.quotas - 1, 0);
+
       await newInscription.save();
-      targetGroup.quotas--; // Decrementar los cupos disponibles en el grupo alternativo
       await targetGroup.save();
 
       return res.status(201).json({ success: true, data: newInscription });

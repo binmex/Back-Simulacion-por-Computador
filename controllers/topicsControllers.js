@@ -4,6 +4,13 @@ const { handleRequest } = require("../utils/requestHandler");
 
 exports.save = async (req, res) => {
   handleRequest(res, async () => {
+    if (req.body.quotas <= 0) {
+      return {
+        success: false,
+        status: 400,
+        message: "No se puede agregar una materia con 0 cupos",
+      };
+    }
     const newTopic = new Topic(req.body);
     const data = await newTopic.save();
     const group = new Group({
@@ -21,6 +28,13 @@ exports.update = async (req, res) => {
   const { id } = req.params;
   const updateInformation = req.body;
   handleRequest(res, async () => {
+    if (req.body.quotas <= 0) {
+      return {
+        success: false,
+        status: 400,
+        message: "No se puede agregar una materia con 0 cupos",
+      };
+    }
     const data = await Topic.updateOne({ id: id }, { $set: updateInformation });
     if (data.matchedCount === 0) {
       console.log("entro a la validacion");
@@ -75,7 +89,11 @@ exports.findGroupsByTopicId = async (req, res) => {
   handleRequest(res, async () => {
     const data = await Group.find({ topic: id });
     if (data.length === 0) {
-      return { success: false, status: 404, message: "No se encontraron grupos para esta materia" };
+      return {
+        success: false,
+        status: 404,
+        message: "No se encontraron grupos para esta materia",
+      };
     }
     return { success: true, status: 200, data };
   });
