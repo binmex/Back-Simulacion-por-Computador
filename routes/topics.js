@@ -118,6 +118,11 @@ routes.get("/byId/:id", findById);
  *               quotas:
  *                 type: number
  *                 description: Cuotas del tema
+ *               program:
+ *                 type: string
+ *                 format: objectId
+ *                 example: "60d5ec49c458b845d4d4e5a2"
+ *                 description: ID del programa (referencia a la colección de programas)
  *     responses:
  *       200:
  *         description: Éxito
@@ -169,6 +174,11 @@ routes.post("/", save);
  *               quotas:
  *                 type: number
  *                 description: Cupos de la materia
+ *               program:
+ *                 type: string
+ *                 format: objectId
+ *                 example: "60d5ec49c458b845d4d4e5a2"
+ *                 description: ID del programa (referencia a la colección de programas)
  *     responses:
  *       200:
  *         description: Éxito
@@ -217,8 +227,8 @@ routes.delete("/:id", deleteTopic);
  *         required: true
  *         schema:
  *           type: string
-*           format: objectId
-*           example: "6085e894932ec20015bbf017"
+ *           format: objectId
+ *           example: "6085e894932ec20015bbf017"
  *     responses:
  *       200:
  *         description: Success
