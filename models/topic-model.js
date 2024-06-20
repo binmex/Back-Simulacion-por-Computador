@@ -34,6 +34,11 @@ const SchemaTopic = new Schema({
     type: Number,
     required: true,
   },
+  program: {
+    type: Schema.Types.ObjectId,
+    ref: "program",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("topic", SchemaTopic);

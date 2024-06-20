@@ -47,6 +47,11 @@ const SchemaStudent = new Schema({
     enum: ["matriculado", "no matriculado"],
     required: false,
   },
+  program: {
+    type: Schema.Types.ObjectId,
+    ref: "program",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("student", SchemaStudent);
