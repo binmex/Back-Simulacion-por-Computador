@@ -20,7 +20,7 @@ exports.update = async (req, res) => {
   const updateInformation = req.body;
   try {
     const data = await Student.updateOne(
-      { id: id },
+      { _id: id },
       { $set: updateInformation }
     );
     res.status(200).json({ state: true, data: data });

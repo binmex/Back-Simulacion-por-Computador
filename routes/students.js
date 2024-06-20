@@ -168,25 +168,34 @@ routes.get("/byId/:id", findById);
  *               state:
  *                 type: string
  *                 enum: [matriculado, no matriculado]
+ *               program:
+ *                 type: string
+ *                 format: objectId
+ *                 example: "60d5ec49c458b845d4d4e5a2"
+ *                 description: ID del programa (referencia a la colección de programas)
  *     responses:
  *       200:
  *         description: Success
+ *       500:
+ *         description: Error del servidor
  */
 routes.post("/", save);
 
 /**
  * @swagger
- * /students/{id}:
+ * /students/{ObjectId}:
  *   patch:
  *     tags:
  *       - Estudiantes
- *     description: Actualiza un estudiante por su ID
+ *     description: Actualiza un estudiante por su ID de MongoDB
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: ObjectId
  *         required: true
  *         schema:
- *           type: number
+ *           example: "6085e894932ec20015bbf017"
+ *           type: string
+ *           format: objectId
  *     requestBody:
  *       required: true
  *       content:
@@ -215,6 +224,11 @@ routes.post("/", save);
  *               state:
  *                 type: string
  *                 enum: [matriculado, no matriculado]
+ *               program:
+ *                 type: string
+ *                 format: objectId
+ *                 example: "60d5ec49c458b845d4d4e5a2"
+ *                 description: ID del programa (referencia a la colección de programas)
  *     responses:
  *       200:
  *         description: Success
@@ -222,6 +236,8 @@ routes.post("/", save);
  *         description: Not found
  *       400:
  *         description: Bad request
+ *       500:
+ *         description: Error del servidor
  */
 routes.patch("/:id", update);
 

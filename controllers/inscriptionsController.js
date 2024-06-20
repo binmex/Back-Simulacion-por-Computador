@@ -100,7 +100,6 @@ exports.findAllInscription = async (req, res) => {
       .populate("student");
     res.status(200).json({ success: true, data: inscriptions });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
