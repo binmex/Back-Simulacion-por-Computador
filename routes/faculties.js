@@ -54,7 +54,7 @@ router.get("/", getAllFaculties);
  *                 description: Nombre de la facultad
  *               ubication:
  *                 type: string
- *                 example: "Tunja"
+ *                 example: "Sede Central Tunja–Boyacá–Colombia, Segundo piso, Avenida Central del Norte 39-115"
  *                 description: Ubicación de la facultad
  *               phone:
  *                 type: number
@@ -136,7 +136,7 @@ router.get("/findById/:id", getFacultyById);
  *                 description: Nombre de la facultad
  *               ubication:
  *                 type: string
- *                 example: "Tunja"
+ *                 example: "Sede Central Tunja–Boyacá–Colombia, Segundo piso, Avenida Central del Norte 39-115"
  *                 description: Ubicación de la facultad
  *               phone:
  *                 type: number

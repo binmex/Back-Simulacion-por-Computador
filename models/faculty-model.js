@@ -29,6 +29,7 @@ const FacultySchema = new Schema({
   },
   headquarter: {
     type: String,
+    enum: ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Aguazul"],
     required: true,
   },
 });

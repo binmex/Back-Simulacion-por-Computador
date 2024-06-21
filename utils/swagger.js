@@ -17,19 +17,18 @@ const swaggerOptions = {
       },
     },
   },
-  apis: [`${path.join(__dirname, "../routes/*.js")}`], // Rutas donde se encuentran los comentarios JSDoc
+  apis: [`${path.join(__dirname, "../routes/*.js")}`],
 };
 
-// Leer los estilos CSS de Swagger-UI
 const swaggerUICSSPath = path.resolve(
   __dirname,
   "../node_modules/swagger-ui-dist/swagger-ui.css"
 );
 const css = fs.readFileSync(swaggerUICSSPath, "utf8");
 
-// Opciones personalizadas para Swagger-UI
 const options = {
   customCss: css,
+  customfavIcon: "../node_modules/swagger-ui-dist/favicon-32x32.png",
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
