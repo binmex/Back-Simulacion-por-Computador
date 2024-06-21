@@ -28,7 +28,6 @@ const css = fs.readFileSync(swaggerUICSSPath, "utf8");
 
 const options = {
   customCss: css,
-  customfavIcon: "../node_modules/swagger-ui-dist/favicon-32x32.png",
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
