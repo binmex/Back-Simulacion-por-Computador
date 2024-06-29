@@ -4,10 +4,19 @@ const bcrypt = require("bcrypt");
 
 exports.validate = async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.find({
+  // console.log("username",username)
+  // console.log("password",password)
+  const user = await User.findOne({
     username: username,
   });
-  let pwd = bcrypt.compareSync(password, user[0].password);
+  if (!user) {
+    return res.status(404).json({
+      state: false,
+      error: `Usuario no encontrado.`,
+    });
+  }
+  // console.log("usercontrasañ",user.password)
+  let pwd = bcrypt.compareSync(password, user.password);
   if (!pwd) {
     res.status(404).json({
       state: false,
@@ -15,7 +24,7 @@ exports.validate = async (req, res) => {
     });
   } else {
     try {
-      const token = jwt.createToken(user[0]);
+      const token = jwt.createToken(user);
       res.status(200).json({ state: true, data: "Usuario encontrado", token });
     } catch (err) {
       res.status(500).json({ state: false, error: err.message });
