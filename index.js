@@ -29,6 +29,7 @@ app.use("/inscriptions", require("./routes/inscriptions"));
 app.use("/students", require("./routes/students"));
 app.use("/faculties", require("./routes/faculties"));
 app.use("/programs", require("./routes/programs"));
+app.use("/login", require("./routes/login"));
 
 app.use("/", (req, res) =>
   res.send("Back del proyecto de Simulación por Computadores")
