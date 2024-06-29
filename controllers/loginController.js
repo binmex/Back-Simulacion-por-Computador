@@ -15,7 +15,6 @@ exports.validate = async (req, res) => {
       error: `Usuario no encontrado.`,
     });
   }
-  // console.log("usercontrasañ",user.password)
   let pwd = bcrypt.compareSync(password, user.password);
   if (!pwd) {
     res.status(404).json({
@@ -25,7 +24,7 @@ exports.validate = async (req, res) => {
   } else {
     try {
       const token = jwt.createToken(user);
-      res.status(200).json({ state: true, data: "Usuario encontrado", token });
+      res.status(200).json({ state: true, data: {message:"Usuario encontrado", image: user.image}, token });
     } catch (err) {
       res.status(500).json({ state: false, error: err.message });
     }
@@ -33,7 +32,7 @@ exports.validate = async (req, res) => {
 };
 
 exports.save = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, image, role } = req.body;
   const user = await User.find({
     username: username,
   });

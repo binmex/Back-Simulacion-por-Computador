@@ -15,6 +15,10 @@ const SchemaUser = new Schema({
     enum: ['student', 'admin'],
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("user", SchemaUser);
