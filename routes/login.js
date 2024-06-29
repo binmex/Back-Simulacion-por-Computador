@@ -18,7 +18,7 @@ const {
 // routes.delete("/:id", check.auth, deleteUser);
 // routes.post("/", validate);
 
-router.post("/upload", upload.single("file"), uploadFileToGCS);
+routes.post("/upload", upload.single("file"), uploadFileToGCS);
 routes.get("/", findAll);
 routes.get("/:id", findById);
 routes.post("/save", save);
