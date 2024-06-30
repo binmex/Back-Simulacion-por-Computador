@@ -51,7 +51,6 @@ exports.validate = async (req, res) => {
   } else {
     try {
       const token = jwt.createToken(user);
-      console.log("usuario"+user)
       res.status(200).json({ state: true, data: {message: "Usuario encontrado", image: user.image}, token });
     } catch (err) {
       res.status(500).json({ state: false, error: err.message });
