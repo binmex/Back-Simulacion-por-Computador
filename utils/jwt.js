@@ -1,11 +1,8 @@
-//importar dependencias
 const jwt = require("jwt-simple");
 const moment = require("moment");
 
-//clave secreta
-const secret = "CLAVE_SECRETA_SIMULACION_12345678";
+const secret = process.env.SECRET_KEY;
 
-//crear funcion para generar token
 const createToken = (user) => {
   const payload = {
     name: user.username,
@@ -14,7 +11,6 @@ const createToken = (user) => {
     iat: moment().unix(),
     exp: moment().add(1, "days").unix(),
   };
-  //devolver token codificado
   return jwt.encode(payload, secret);
 };
 

@@ -173,9 +173,6 @@ routes.get("/byId/:id", findById);
  *                 format: objectId
  *                 example: "60d5ec49c458b845d4d4e5a2"
  *                 description: ID del programa (referencia a la colección de programas)
- *               profile_picture:
- *                 type: string
- *                 example: "http://example.com/image.jpg"
  *     responses:
  *       200:
  *         description: Success
@@ -232,8 +229,6 @@ routes.post("/", save);
  *                 format: objectId
  *                 example: "60d5ec49c458b845d4d4e5a2"
  *                 description: ID del programa (referencia a la colección de programas)
- *               profile_picture:
- *                 type: string
  *     responses:
  *       200:
  *         description: Success

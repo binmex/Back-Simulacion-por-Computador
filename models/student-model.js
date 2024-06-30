@@ -52,10 +52,6 @@ const SchemaStudent = new Schema({
     ref: "program",
     required: true,
   },
-  profile_picture: {
-    type: String,
-    required: false,
-  },
 });
 
 module.exports = mongoose.model("student", SchemaStudent);

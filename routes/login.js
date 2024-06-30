@@ -1,6 +1,5 @@
 const routes = require("express").Router();
 const { upload } = require("../utils/UploadFile");
-const { uploadFileToGCS } = require("../controllers/loginControllers");
 const check = require("../middleware/auth");
 const {
   validate,
@@ -9,7 +8,8 @@ const {
   save,
   deleteUser,
   update,
-} = require("../controllers/loginController");
+  uploadFileToGCS,
+} = require("../controllers/loginControllers");
 
 // routes.get("/", check.auth, findAll);
 // routes.get("/:id", check.auth, findById);
