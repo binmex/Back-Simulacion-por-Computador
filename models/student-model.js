@@ -41,6 +41,7 @@ const SchemaStudent = new Schema({
   email: {
     type: String,
     required: false,
+    unique: true,
   },
   state: {
     type: String,

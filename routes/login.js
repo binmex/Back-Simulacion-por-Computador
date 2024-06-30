@@ -3,29 +3,12 @@ const { upload } = require("../utils/UploadFile");
 const check = require("../middleware/auth");
 const {
   validate,
-  findAll,
-  findById,
-  save,
-  deleteUser,
-  update,
   uploadFileToGCS,
   uploadFileTemporal,
 } = require("../controllers/loginControllers");
 
-// routes.get("/", check.auth, findAll);
-// routes.get("/:id", check.auth, findById);
-// routes.post("/save", check.auth, save);
-// routes.patch("/:id", check.auth, update);
-// routes.delete("/:id", check.auth, deleteUser);
-// routes.post("/", validate);
-
 routes.post("/upload", upload.single("file"), uploadFileToGCS);
 routes.post("/uploadTemporal", upload.single("file"), uploadFileTemporal);
-routes.get("/", findAll);
-routes.get("/:id", findById);
-routes.post("/save", save);
-routes.patch("/:id", update);
-routes.delete("/:id", deleteUser);
 routes.post("/", validate);
 
 module.exports = routes;

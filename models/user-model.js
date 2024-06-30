@@ -5,6 +5,7 @@ const SchemaUser = new Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
@@ -12,13 +13,13 @@ const SchemaUser = new Schema({
   },
   role: {
     type: String,
-    enum: ['student', 'admin'],
+    enum: ["student", "admin"],
     required: true,
   },
   image: {
     type: String,
-    required: false,
-  }
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("user", SchemaUser);
