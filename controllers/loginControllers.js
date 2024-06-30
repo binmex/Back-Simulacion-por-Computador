@@ -36,6 +36,41 @@ exports.uploadFileToGCS = async (req, res) => {
   blobStream.end(req.file.buffer);
 };
 
+exports.uploadFileTemporal = async (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
+  // Especifica el nombre de la carpeta donde quieres guardar el archivo
+  const folderName = 'Temporal/';
+  // Crea la ruta completa del archivo incluyendo la carpeta y el nombre del archivo
+  const blob = bucket.file(`${folderName}${req.file.originalname}`);
+  const blobStream = blob.createWriteStream({
+    resumable: false,
+  });
+
+  blobStream.on("error", (err) => {
+    console.error(err);
+    res.status(500).send("Error uploading file");
+  });
+
+  blobStream.on("finish", async () => {
+    try {
+      const [url] = await blob.getSignedUrl({
+        action: "read",
+        expires: "01-01-2100",
+      });
+
+      res.status(200).send(`${url}`);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error generating signed URL");
+    }
+  });
+
+  blobStream.end(req.file.buffer);
+};
+
 exports.validate = async (req, res) => {
   const { username, password } = req.body;
   const encryptedUsername = encrypt(username);

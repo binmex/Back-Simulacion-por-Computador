@@ -9,6 +9,7 @@ const {
   deleteUser,
   update,
   uploadFileToGCS,
+  uploadFileTemporal,
 } = require("../controllers/loginControllers");
 
 // routes.get("/", check.auth, findAll);
@@ -19,6 +20,7 @@ const {
 // routes.post("/", validate);
 
 routes.post("/upload", upload.single("file"), uploadFileToGCS);
+routes.post("/uploadTemporal", upload.single("file"), uploadFileTemporal);
 routes.get("/", findAll);
 routes.get("/:id", findById);
 routes.post("/save", save);
