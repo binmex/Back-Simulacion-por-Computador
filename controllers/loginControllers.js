@@ -88,7 +88,7 @@ exports.validate = async (req, res) => {
       const token = jwt.createToken(user);
       res.status(200).json({
         state: true,
-        data: { message: "Usuario encontrado", image: user.image, username: user.username},
+        data: { message: "Usuario encontrado", image: user.image, username: user.username, role: user.role},
         token,
       });
     } catch (err) {
