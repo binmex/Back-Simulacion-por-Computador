@@ -19,17 +19,8 @@ const FacultySchema = new Schema({
     type: Number,
     required: true,
   },
-  date_registration: {
-    type: Date,
-    required: true,
-  },
   email: {
     type: String,
-    required: true,
-  },
-  headquarter: {
-    type: String,
-    enum: ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Aguazul"],
     required: true,
   },
 });

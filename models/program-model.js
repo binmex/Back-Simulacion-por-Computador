@@ -7,6 +7,11 @@ const ProgramSchema = new Schema({
     required: true,
     unique: true,
   },
+  level: {
+    type: String,
+    enum: ["Pregrado", "Posgrado"],
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -23,16 +28,10 @@ const ProgramSchema = new Schema({
   },
   location: {
     type: String,
-    enum: ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Aguazul"],
     required: true,
   },
   modality: {
     type: String,
-    enum: ["Virtual", "Distancia", "Presencial"],
-    required: true,
-  },
-  date_registration: {
-    type: Date,
     required: true,
   },
 });
