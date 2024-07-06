@@ -10,6 +10,7 @@
   "author": "Robinson Aguilar, Julieth Becerra, Diana Díaz, Luis Pinto",
   "license": "ISC",
   "dependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@google-cloud/storage": "^7.11.2",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
