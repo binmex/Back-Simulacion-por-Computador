@@ -1,19 +1,20 @@
 const User = require("../models/user-model");
 const Student = require("../models/student-model");
+const { encrypt, decrypt } = require("../utils/encrypt");
 const bcrypt = require("bcrypt");
 const { handleRequest } = require("../utils/requestHandler");
-const { faker } = require('@faker-js/faker'); // Actualización de la importación
+const { faker } = require("@faker-js/faker"); // Actualización de la importación
 
 exports.save = async (req, res) => {
   const { username, password } = req.body;
   const encryptedUsername = encrypt(username);
-  
+
   const user = await User.find({ username: encryptedUsername });
   if (user.length < 1) {
     const pwd = await bcrypt.hash(password, 10);
     req.body.password = pwd;
     req.body.username = encryptedUsername;
-    
+
     const newUser = new User(req.body);
     try {
       const data = await newUser.save();
@@ -22,7 +23,9 @@ exports.save = async (req, res) => {
       res.status(500).json({ state: false, error: err.message });
     }
   } else {
-    return res.status(409).json({ state: false, error: "El usuario ya existe." });
+    return res
+      .status(409)
+      .json({ state: false, error: "El usuario ya existe." });
   }
 };
 
@@ -48,7 +51,7 @@ exports.update = async (req, res) => {
 exports.findAll = async (req, res) => {
   try {
     const data = await User.find({});
-    data.forEach((user) => user.username = decrypt(user.username))
+    data.forEach((user) => (user.username = decrypt(user.username)));
     res.status(200).json({ state: true, data: data });
   } catch (err) {
     res.status(500).json({ state: false, error: err.message });
@@ -80,7 +83,7 @@ const processBatch = async (students) => {
   const users = [];
 
   for (const student of students) {
-    const username = student.email;
+    const username = encrypt(student.email);
 
     // Verificar si el usuario ya existe
     const existingUser = await User.findOne({ username });
@@ -126,6 +129,10 @@ exports.createUsersFromStudents = async (req, res) => {
       }
     }
 
-    return { success: true, status: 200, message: `${totalProcessed} usuarios creados exitosamente` };
+    return {
+      success: true,
+      status: 200,
+      message: `${totalProcessed} usuarios creados exitosamente`,
+    };
   });
 };
