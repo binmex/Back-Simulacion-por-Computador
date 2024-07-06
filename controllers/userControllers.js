@@ -1,6 +1,6 @@
 const User = require("../models/user-model");
 const Student = require("../models/student-model");
-const { encrypt, decrypt } = require("../utils/encrypt");
+const { encrypt, decrypt } = require("../utils/encryptation");
 const bcrypt = require("bcrypt");
 const { handleRequest } = require("../utils/requestHandler");
 const { faker } = require("@faker-js/faker"); // Actualización de la importación
