@@ -86,7 +86,7 @@ const processBatch = async (students) => {
     const username = encrypt(student.email);
 
     // Verificar si el usuario ya existe
-    const existingUser = await User.findOne({ "username": username });
+    const existingUser = await User.findOne({ username: username });
 
     if (!existingUser) {
       const password = bcrypt.hashSync(faker.internet.password(), 10); // Genera una contraseña cifrada
