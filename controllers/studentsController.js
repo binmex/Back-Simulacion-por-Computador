@@ -1,4 +1,5 @@
 const Student = require("../models/student-model");
+const Program = require("../models/program-model");
 const { handleRequest } = require("../utils/requestHandler");
 
 exports.save = async (req, res) => {
@@ -51,6 +52,7 @@ exports.infoPaged = async (req, res) => {
       : { _id: -1 };
 
     const data = await Student.find({})
+      .populate("program", "name") // Populate program name
       .sort(sortObject)
       .skip((pageNumber - 1) * pageSize)
       .limit(pageSize);
@@ -123,5 +125,28 @@ exports.countDocumentsStudents = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
     console.log(error);
+  }
+};
+
+
+exports.assignPrograms = async (req, res) => {
+  try {
+    const programs = await Program.find({});
+    if (programs.length === 0) {
+      return res.status(404).json({ success: false, message: "No hay programas disponibles" });
+    }
+
+    const programCount = programs.length;
+    const studentsWithoutProgram = await Student.find({ program: { $exists: false } });
+
+    for (const student of studentsWithoutProgram) {
+      const randomProgram = programs[Math.floor(Math.random() * programCount)];
+      student.program = randomProgram._id;
+      await student.save();
+    }
+
+    res.status(200).json({ success: true, message: "Programas asignados a los estudiantes sin programa" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
