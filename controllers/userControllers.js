@@ -9,8 +9,9 @@ exports.save = async (req, res) => {
   const { username, password } = req.body;
   const encryptedUsername = encrypt(username);
 
-  const user = await User.find({ username: encryptedUsername });
-  if (user.length < 1) {
+  const user = await User.findOne({ username: encryptedUsername });
+
+  if (!user) {
     const pwd = await bcrypt.hash(password, 10);
     req.body.password = pwd;
     req.body.username = encryptedUsername;
