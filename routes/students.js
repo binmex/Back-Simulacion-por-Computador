@@ -8,6 +8,7 @@ const {
   deleteStudent,
   countDocumentsStudents,
   findCode,
+  assignPrograms,
 } = require("../controllers/studentsController");
 
 /**
@@ -276,5 +277,20 @@ routes.delete("/:id", deleteStudent);
  *         description: Error del servidor
  */
 routes.get("/countStudents", countDocumentsStudents);
+
+/**
+ * @swagger
+ * /students/assign-programs:
+ *   post:
+ *     tags:
+ *       - Estudiantes
+ *     description: Asigna programas a todos los estudiantes
+ *     responses:
+ *       200:
+ *         description: Programas asignados exitosamente
+ *       500:
+ *         description: Error del servidor
+ */
+routes.post("/assign-programs", assignPrograms);
 
 module.exports = routes;
