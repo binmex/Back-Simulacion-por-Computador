@@ -7,6 +7,10 @@ const {
   findById,
   deleteTopic,
   findGroupsByTopicId,
+  addProgramToTopic,
+  getTopicsByProgram,
+  assignProgramsToAllTopics,
+  assignTopicsToPrograms,
 } = require("../controllers/topicsControllers");
 
 /**
@@ -118,14 +122,17 @@ routes.get("/byId/:id", findById);
  *               quotas:
  *                 type: number
  *                 description: Cuotas del tema
- *               program:
- *                 type: string
- *                 format: objectId
- *                 example: "60d5ec49c458b845d4d4e5a2"
- *                 description: ID del programa (referencia a la colección de programas)
+ *               programs:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: objectId
+ *                   description: IDs de los programas (referencia a la colección de programas)
  *     responses:
- *       200:
+ *       201:
  *         description: Éxito
+ *       400:
+ *         description: Solicitud incorrecta
  *       500:
  *         description: Error del servidor
  */
@@ -151,19 +158,13 @@ routes.post("/", save);
  *           schema:
  *             type: object
  *             properties:
- *               id:
- *                 type: number
- *                 description: ID de la materia
- *               name:
- *                 type: string
- *                 description: Nombre de la materia
- *               classroom:
+ *               aula:
  *                 type: string
  *                 description: Aula de la materia
  *               credits:
  *                 type: number
  *                 description: Créditos de la materia
- *               registrationDate:
+ *               date_registration:
  *                 type: string
  *                 format: date
  *                 description: Fecha de registro de la materia (formato YYYY-MM-DD)
@@ -174,11 +175,12 @@ routes.post("/", save);
  *               quotas:
  *                 type: number
  *                 description: Cupos de la materia
- *               program:
- *                 type: string
- *                 format: objectId
- *                 example: "60d5ec49c458b845d4d4e5a2"
- *                 description: ID del programa (referencia a la colección de programas)
+ *               programs:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: objectId
+ *                   description: IDs de los programas (referencia a la colección de programas)
  *     responses:
  *       200:
  *         description: Éxito
@@ -238,5 +240,94 @@ routes.delete("/:id", deleteTopic);
  *         description: Error del servidor
  */
 routes.get("/groups/:id", findGroupsByTopicId);
+
+/**
+ * @swagger
+ * /topics/add-program:
+ *   post:
+ *     tags:
+ *       - Materias
+ *     description: Añade un programa a una materia existente
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               topicId:
+ *                 type: string
+ *                 format: objectId
+ *                 description: ID de la materia
+ *               programId:
+ *                 type: string
+ *                 format: objectId
+ *                 description: ID del programa
+ *     responses:
+ *       200:
+ *         description: Programa añadido exitosamente
+ *       404:
+ *         description: Materia o programa no encontrado
+ *       500:
+ *         description: Error del servidor
+ */
+routes.post("/add-program", addProgramToTopic);
+
+/**
+ * @swagger
+ * /topics/by-program/{programId}:
+ *   get:
+ *     tags:
+ *       - Materias
+ *     description: Obtiene todas las materias de un programa
+ *     parameters:
+ *       - in: path
+ *         name: programId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: objectId
+ *     responses:
+ *       200:
+ *         description: Éxito
+ *       404:
+ *         description: Materia no encontrada
+ *       500:
+ *         description: Error del servidor
+ */
+routes.get("/by-program/:programId", getTopicsByProgram);
+
+/**
+ * @swagger
+ * /topics/assign-programs:
+ *   post:
+ *     tags:
+ *       - Materias
+ *     description: Asigna programas específicos a todas las materias existentes
+ *     responses:
+ *       200:
+ *         description: Programas asignados exitosamente
+ *       404:
+ *         description: Uno o más programas no encontrados
+ *       500:
+ *         description: Error del servidor
+ */
+routes.post("/assign-programs", assignProgramsToAllTopics);
+
+
+/**
+ * @swagger
+ * /topics/assign-to-programs:
+ *   post:
+ *     tags:
+ *       - Materias
+ *     description: Asigna materias a todos los programas
+ *     responses:
+ *       200:
+ *         description: Success
+ *       500:
+ *         description: Error del servidor
+ */
+routes.post("/assign-to-programs", assignTopicsToPrograms);
 
 module.exports = routes;

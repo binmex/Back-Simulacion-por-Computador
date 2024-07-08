@@ -15,7 +15,6 @@ const SchemaTopic = new Schema({
   aula: {
     type: String,
     required: true,
-    unique: false,
   },
   credits: {
     type: Number,
@@ -34,11 +33,12 @@ const SchemaTopic = new Schema({
     type: Number,
     required: true,
   },
-  program: {
-    type: Schema.Types.ObjectId,
-    ref: "program",
-    required: true,
-  },
+  programs: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "program",
+    },
+  ],
 });
 
 module.exports = mongoose.model("topic", SchemaTopic);

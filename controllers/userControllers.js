@@ -3,7 +3,7 @@ const Student = require("../models/student-model");
 const { encrypt, decrypt } = require("../utils/encryptation");
 const bcrypt = require("bcrypt");
 const { handleRequest } = require("../utils/requestHandler");
-const { faker } = require("@faker-js/faker"); // Actualización de la importación
+const { faker } = require("@faker-js/faker"); 
 
 exports.save = async (req, res) => {
   const { username, password } = req.body;
