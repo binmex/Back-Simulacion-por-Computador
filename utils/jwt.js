@@ -9,6 +9,7 @@ const createToken = (user, student) => {
     password: user.password,
     role: user.role,
     program: student.program,
+    objectId: student_id,
     iat: moment().unix(),
     exp: moment().add(1, "days").unix(),
   };
