@@ -3,23 +3,49 @@ const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
 const mongoose = require("mongoose");
 
-exports.findGroupsByStudent = async (req, res) => {
+exports.findTopicsByStudent = async (req, res) => {
   const { studentId } = req.params;
+
   try {
     const inscriptions = await Inscription.find({ student: studentId }).populate("group");
-    
+
     if (!inscriptions || inscriptions.length === 0) {
-      return res.status(404).json({ success: false, message: "No se encontraron inscripciones para el estudiante especificado" });
+      return res.status(404).json({ success: false, message: "Inscripciones no encontradas" });
     }
 
-    const groups = inscriptions.map(inscription => inscription.group);
+    const groupIds = inscriptions.map(inscription => inscription.group._id);
 
-    res.status(200).json({ success: true, data: groups });
+    const groups = await Group.find({ _id: { $in: groupIds } }).populate("topic");
+
+    const result = groups.map(group => ({
+      ...group.topic.toObject(),
+      grupo: group.grupo
+    }));
+
+    res.status(200).json({ success: true, data: result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+// exports.findGroupsByStudent = async (req, res) => {
+//   const { studentId } = req.params;
+//   try {
+//     const inscriptions = await Inscription.find({ student: studentId }).populate("group");
+    
+//     if (!inscriptions || inscriptions.length === 0) {
+//       return res.status(404).json({ success: false, message: "No se encontraron inscripciones para el estudiante especificado" });
+//     }
+
+//     const groups = inscriptions.map(inscription => inscription.group);
+
+//     res.status(200).json({ success: true, data: groups });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };
 exports.saveInscription = async (req, res) => {
   try {
     const { student, group: groupId, registrationDate } = req.body;
