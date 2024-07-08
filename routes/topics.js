@@ -11,6 +11,7 @@ const {
   getTopicsByProgram,
   assignProgramsToAllTopics,
   assignTopicsToPrograms,
+  findGroupsByProgram,
 } = require("../controllers/topicsControllers");
 
 /**
@@ -314,7 +315,6 @@ routes.get("/by-program/:programId", getTopicsByProgram);
  */
 routes.post("/assign-programs", assignProgramsToAllTopics);
 
-
 /**
  * @swagger
  * /topics/assign-to-programs:
@@ -329,5 +329,30 @@ routes.post("/assign-programs", assignProgramsToAllTopics);
  *         description: Error del servidor
  */
 routes.post("/assign-to-programs", assignTopicsToPrograms);
+
+/**
+ * @swagger
+ * /topics/program/{objectId}:
+ *   get:
+ *     tags:
+ *       - Materias
+ *     description: Obtiene los materias por el ID del programa
+ *     parameters:
+ *       - in: path
+ *         name: objectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: objectId
+ *           example: "6085e894932ec20015bbf017"
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Error del servidor
+ */
+routes.get("/program/:id", findGroupsByProgram);
 
 module.exports = routes;
