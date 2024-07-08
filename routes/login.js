@@ -11,6 +11,6 @@ const {
 routes.post("/upload", upload.single("file"), uploadFileToGCS);
 routes.post("/uploadTemporal", upload.single("file"), uploadFileTemporal);
 routes.post("/", validate);
-routes.get("/", decodeToken);
+routes.post("/decode", decodeToken);
 
 module.exports = routes;
