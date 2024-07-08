@@ -3,11 +3,12 @@ const moment = require("moment");
 
 const secret = process.env.SECRET_KEY;
 
-const createToken = (user) => {
+const createToken = (user, student) => {
   const payload = {
     name: user.username,
     password: user.password,
     role: user.role,
+    program: student.program,
     iat: moment().unix(),
     exp: moment().add(1, "days").unix(),
   };

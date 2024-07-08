@@ -1,7 +1,8 @@
 const { bucket } = require("../utils/UploadFile");
 const User = require("../models/user-model");
+const Student = require("../models/student-model");
 const jwt = require("../utils/jwt");
-const { encrypt,decrypt } = require("../utils/encryptation");
+const { encrypt, decrypt } = require("../utils/encryptation");
 const bcrypt = require("bcrypt");
 
 exports.uploadFileToGCS = async (req, res) => {
@@ -84,8 +85,11 @@ exports.validate = async (req, res) => {
   if (!pwd) {
     res.status(404).json({ state: false, error: `Usuario no encontrado.` });
   } else {
+    const student = await Student.findOne({
+      username: decrypt(encryptedUsername),
+    });
     try {
-      const token = jwt.createToken(user);
+      const token = jwt.createToken(user, student);
       res.status(200).json({
         state: true,
         data: {
@@ -102,13 +106,18 @@ exports.validate = async (req, res) => {
   }
 };
 
-exports.decodeToken = (req,res)=>{
-  const {token} = req.body
-  try{
-    const decodeToken = jwt.decodeToken(token)
-    const emailDecoded = decrypt(decodeToken.name)
-    res.status(200).json({state: true, data: {email:emailDecoded,emailToken:decodeToken.name}})
-  }catch(error){
-    res.status(500).json({state: false, error: error.message})
+exports.decodeToken = (req, res) => {
+  const { token } = req.body;
+  try {
+    const decodeToken = jwt.decodeToken(token);
+    const emailDecoded = decrypt(decodeToken.name);
+    res
+      .status(200)
+      .json({
+        state: true,
+        data: { email: emailDecoded, emailToken: decodeToken.name },
+      });
+  } catch (error) {
+    res.status(500).json({ state: false, error: error.message });
   }
-} 
+};
