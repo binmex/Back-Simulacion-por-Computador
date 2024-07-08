@@ -3,7 +3,7 @@ const Group = require("../models/group-model");
 const Topic = require("../models/topic-model");
 const mongoose = require("mongoose");
 
-exports.findTopicsByStudent = async (req, res) => {
+exports.findGroupsByStudent = async (req, res) => {
   const { studentId } = req.params;
 
   try {
