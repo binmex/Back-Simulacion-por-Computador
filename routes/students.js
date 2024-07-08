@@ -296,6 +296,6 @@ routes.post("/assign-programs", assignPrograms);
 
 /*falta el Swager de este metodo*/
 
-routes.get("/findEmail", findEmail);
+routes.post("/findEmail", findEmail);
 
 module.exports = routes;
