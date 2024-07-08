@@ -1,7 +1,7 @@
 const { bucket } = require("../utils/UploadFile");
 const User = require("../models/user-model");
 const jwt = require("../utils/jwt");
-const { encrypt } = require("../utils/encryptation");
+const { encrypt,decrypt } = require("../utils/encryptation");
 const bcrypt = require("bcrypt");
 
 exports.uploadFileToGCS = async (req, res) => {
@@ -101,3 +101,14 @@ exports.validate = async (req, res) => {
     }
   }
 };
+
+exports.decodeToken = (req,res)=>{
+  const {token} = req.body
+  try{
+    const decodeToken = jwt.decodeToken(token)
+    const emailDecoded = decrypt(decodeToken.name)
+    res.status(200).json({state: true, data: {email:emailDecoded,emailToken:decodeToken.name}})
+  }catch(error){
+    res.status(500).json({state: false, error: error.message})
+  }
+} 

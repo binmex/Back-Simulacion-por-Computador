@@ -5,10 +5,12 @@ const {
   validate,
   uploadFileToGCS,
   uploadFileTemporal,
+  decodeToken,
 } = require("../controllers/loginControllers");
 
 routes.post("/upload", upload.single("file"), uploadFileToGCS);
 routes.post("/uploadTemporal", upload.single("file"), uploadFileTemporal);
 routes.post("/", validate);
+routes.get("/", decodeToken);
 
 module.exports = routes;

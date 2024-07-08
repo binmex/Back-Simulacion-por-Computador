@@ -14,7 +14,17 @@ const createToken = (user) => {
   return jwt.encode(payload, secret);
 };
 
+const decodeToken = (token) => {
+  try{
+    const decoded = jwt.decode(token,secret);
+    return decoded
+  }catch(error){
+    throw new Error('Invalid Token')
+  }
+}
+
 module.exports = {
   secret,
   createToken,
+  decodeToken
 };

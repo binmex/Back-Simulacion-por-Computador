@@ -9,6 +9,7 @@ const {
   countDocumentsStudents,
   findCode,
   assignPrograms,
+  findEmail,
 } = require("../controllers/studentsController");
 
 /**
@@ -292,5 +293,9 @@ routes.get("/countStudents", countDocumentsStudents);
  *         description: Error del servidor
  */
 routes.post("/assign-programs", assignPrograms);
+
+/*falta el Swager de este metodo*/
+
+routes.get("/findEmail", findEmail);
 
 module.exports = routes;
