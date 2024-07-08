@@ -85,10 +85,10 @@ exports.validate = async (req, res) => {
   if (!pwd) {
     res.status(404).json({ state: false, error: `Usuario no encontrado.` });
   } else {
-    const student = await Student.findOne({
-      username: decrypt(encryptedUsername),
-    });
     try {
+      const student = await Student.findOne({
+        email: decrypt(encryptedUsername),
+      });
       const token = jwt.createToken(user, student);
       res.status(200).json({
         state: true,
@@ -111,12 +111,10 @@ exports.decodeToken = (req, res) => {
   try {
     const decodeToken = jwt.decodeToken(token);
     const emailDecoded = decrypt(decodeToken.name);
-    res
-      .status(200)
-      .json({
-        state: true,
-        data: { email: emailDecoded, emailToken: decodeToken.name },
-      });
+    res.status(200).json({
+      state: true,
+      data: { email: emailDecoded, emailToken: decodeToken.name },
+    });
   } catch (error) {
     res.status(500).json({ state: false, error: error.message });
   }
