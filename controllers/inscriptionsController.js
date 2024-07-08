@@ -19,7 +19,8 @@ exports.findGroupsByStudent = async (req, res) => {
 
     const result = groups.map(group => ({
       ...group.topic.toObject(),
-      grupo: group.grupo
+      grupo: group.grupo,
+      grupoId: group._id
     }));
 
     res.status(200).json({ success: true, data: result });
