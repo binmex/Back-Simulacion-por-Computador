@@ -5,48 +5,33 @@ const mongoose = require("mongoose");
 
 exports.findGroupsByStudent = async (req, res) => {
   const { studentId } = req.params;
-
   try {
-    const inscriptions = await Inscription.find({ student: studentId }).populate("group");
+    const inscriptions = await Inscription.find({ student: studentId })
+      .populate({
+        path: 'group',
+        populate: {
+          path: 'topic',
+          model: 'Topic'
+        }
+      });
 
-    if (!inscriptions || inscriptions.length === 0) {
-      return res.status(404).json({ success: false, message: "Inscripciones no encontradas" });
-    }
-
-    const groupIds = inscriptions.map(inscription => inscription.group._id);
-
-    const groups = await Group.find({ _id: { $in: groupIds } }).populate("topic");
-
-    const result = groups.map(group => ({
-      ...group.topic.toObject(),
-      grupo: group.grupo,
-      grupoId: group._id
+    const topics = inscriptions.map(inscription => ({
+      inscriptionId: inscription._id,
+      name: inscription.group.topic.name,
+      aula: inscription.group.topic.aula,
+      credits: inscription.group.topic.credits,
+      state: inscription.group.topic.state,
+      quotas: inscription.group.topic.quotas,
+      grupo: inscription.group.grupo
     }));
 
-    res.status(200).json({ success: true, data: result });
+    res.status(200).json({ success: true, data: topics });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
 
-// exports.findGroupsByStudent = async (req, res) => {
-//   const { studentId } = req.params;
-//   try {
-//     const inscriptions = await Inscription.find({ student: studentId }).populate("group");
-    
-//     if (!inscriptions || inscriptions.length === 0) {
-//       return res.status(404).json({ success: false, message: "No se encontraron inscripciones para el estudiante especificado" });
-//     }
-
-//     const groups = inscriptions.map(inscription => inscription.group);
-
-//     res.status(200).json({ success: true, data: groups });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, error: error.message });
-//   }
-// };
 exports.saveInscription = async (req, res) => {
   try {
     const { student, group: groupId, registrationDate } = req.body;
