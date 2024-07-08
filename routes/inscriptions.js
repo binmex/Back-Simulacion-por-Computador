@@ -10,8 +10,10 @@ const {
   findStudentsByTopicAndGroup,
   findInscriptionsByStudent,
   findStudentsByGroup,
+  findGroupsByStudent,
 } = require("../controllers/inscriptionsController");
 
+router.get('/buscarIncritos/:studentId', findGroupsByStudent);
 /**
  * @swagger
  * tags:
