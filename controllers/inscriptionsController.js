@@ -12,7 +12,7 @@ exports.findGroupsByStudent = async (req, res) => {
         populate: {
           path: 'topic',
           model: 'Topic'
-        }
+        } 
       });
 
     const topics = inscriptions.map(inscription => ({
@@ -34,7 +34,13 @@ exports.findGroupsByStudent = async (req, res) => {
 
 exports.saveInscription = async (req, res) => {
   try {
-    const { student, group: groupId, registrationDate } = req.body;
+    const { student, group, registrationDate } = req.body;
+    const groupId=group._id
+    const existingInscription = await Inscription.findOne({ student: student._id, group: group._id });
+    console.log(existingInscription, student._id, groupId)
+    if (existingInscription) {
+      return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este grupo." });
+    }
 
     const originalGroup = await Group.findById(groupId);
     if (!originalGroup) {
@@ -100,7 +106,15 @@ exports.saveInscription = async (req, res) => {
 
         await newGroup.save();
         targetGroup = newGroup;
+
+        
       }
+
+      const existingInscription = await Inscription.findOne({ student: student._id, group: targetGroup._id });
+        console.log(existingInscription, student._id, groupId)
+        if (existingInscription) {
+          return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este grupo." });
+        }
 
       const newInscription = new Inscription({
         student: student._id,
