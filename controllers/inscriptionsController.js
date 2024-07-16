@@ -31,57 +31,34 @@ exports.findGroupsByStudent = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 exports.saveInscription = async (req, res) => {
   try {
     const { student, group, registrationDate } = req.body;
-    const groupId=group._id
-    const existingInscription = await Inscription.findOne({ student: student._id, group: group._id });
-    console.log(existingInscription, student._id, groupId)
+    const groupId = group._id;
+
+    let existingInscription = await Inscription.findOne({ student: student._id, group: groupId });
     if (existingInscription) {
       return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este grupo." });
     }
 
     const originalGroup = await Group.findById(groupId);
     if (!originalGroup) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Grupo no encontrado" });
+      return res.status(404).json({ success: false, error: "Grupo no encontrado" });
     }
-    if (originalGroup.quotas > 0) {
-      const newInscription = new Inscription({
-        student: student._id,
-        group: groupId,
-        registrationDate,
-        status: "Inscrito",
-      });
 
-      originalGroup.quotas = Math.max(originalGroup.quotas - 1, 0);
+    let targetGroup = originalGroup;
 
-      await newInscription.save();
-      await originalGroup.save();
+    const originalTopic = await Topic.findById(originalGroup.topic);
+    if (!originalTopic) {
+      return res.status(404).json({ success: false, error: "Materia no encontrada" });
+    }
 
-      return res.status(201).json({ success: true, data: newInscription });
-    } else {
-      const originalTopic = await Topic.findById(originalGroup.topic);
-      if (!originalTopic) {
-        return res
-          .status(404)
-          .json({ success: false, error: "materia no encontrada" });
-      }
-
-      if (originalTopic.quotas === 0) {
-        return res
-          .status(400)
-          .json({ success: false, error: "Error de cupos en las materias" });
-      }
-
+    if (originalGroup.quotas <= 0) {
       const availableGroups = await Group.find({
         topic: originalTopic._id,
         quotas: { $gt: 0 },
       }).sort({ grupo: 1 });
 
-      let targetGroup;
       if (availableGroups.length > 0) {
         targetGroup = availableGroups[0];
       } else {
@@ -91,9 +68,7 @@ exports.saveInscription = async (req, res) => {
 
         let newGroupName = "grupo 60";
         if (lastGroup) {
-          const lastGroupNumber = parseInt(
-            lastGroup.grupo.replace("grupo ", "")
-          );
+          const lastGroupNumber = parseInt(lastGroup.grupo.replace("grupo ", ""));
           newGroupName = `grupo ${lastGroupNumber + 1}`;
         }
 
@@ -106,30 +81,29 @@ exports.saveInscription = async (req, res) => {
 
         await newGroup.save();
         targetGroup = newGroup;
-
-        
       }
 
-      const existingInscription = await Inscription.findOne({ student: student._id, group: targetGroup._id });
-        console.log(existingInscription, student._id, groupId)
-        if (existingInscription) {
-          return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este grupo." });
-        }
-
-      const newInscription = new Inscription({
-        student: student._id,
-        group: targetGroup._id,
-        registrationDate,
-        status: "Inscrito",
-      });
-
-      targetGroup.quotas = Math.max(targetGroup.quotas - 1, 0);
-
-      await newInscription.save();
-      await targetGroup.save();
-
-      return res.status(201).json({ success: true, data: newInscription });
+      existingInscription = await Inscription.findOne({ student: student._id, group: targetGroup._id });
+      if (existingInscription) {
+        return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este nuevo grupo." });
+      }
     }
+
+    const newInscription = new Inscription({
+      student: student._id,
+      group: targetGroup._id,
+      registrationDate,
+      status: "Inscrito",
+    });
+
+    await newInscription.save();
+
+    const inscriptionCount = await Inscription.countDocuments({ group: targetGroup._id });
+    targetGroup.quotas = Math.max(originalTopic.quotas - inscriptionCount, 0); 
+
+    await targetGroup.save();
+
+    return res.status(201).json({ success: true, data: newInscription });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
@@ -203,37 +177,38 @@ exports.updateInscription = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
 exports.deleteInscription = async (req, res) => {
   const { id } = req.params;
   try {
     const inscription = await Inscription.findById(id);
     if (!inscription) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Inscripción no encontrada" });
+      return res.status(404).json({ success: false, error: "Inscripción no encontrada" });
+    }
+
+    const group = await Group.findById(inscription.group);
+    if (!group) {
+      return res.status(404).json({ success: false, error: "Grupo no encontrado" });
     }
 
     await Inscription.findByIdAndDelete(id);
 
-    const group = await Group.findById(inscription.group);
-    if (!group) {
-      return res
-        .status(404)
-        .json({ success: false, error: "Grupo no encontrado" });
+    const topic = await Topic.findById(group.topic);
+    if (!topic) {
+      return res.status(404).json({ success: false, error: "Materia no encontrada" });
     }
 
-    group.quotas++;
+    const inscriptionCount = await Inscription.countDocuments({ group: group._id });
+    group.quotas = Math.max(topic.quotas - inscriptionCount, 0); 
+
     await group.save();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Inscripción eliminada correctamente" });
+    res.status(200).json({ success: true, message: "Inscripción eliminada correctamente" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
 
 exports.findStudentsByTopic = async (req, res) => {
   const { topicId } = req.params;
