@@ -59,8 +59,7 @@ exports.uploadFileTemporal = async (req, res) => {
         action: "read",
         expires: "01-01-2100",
       });
-
-      res.status(200).send(`${url}`);
+      res.status(200).send(`${encrypt(url)}`);
     } catch (err) {
       console.error(err);
       res.status(500).send("Error generating signed URL");
@@ -90,11 +89,12 @@ exports.validate = async (req, res) => {
         email: decrypt(encryptedUsername),
       });
       const token = jwt.createToken(user, student);
+      const image = encrypt(user.image)
       res.status(200).json({
         state: true,
         data: {
           message: "Usuario encontrado",
-          image: user.image,
+          image: image,
           username: user.username,
           role: user.role,
         },
