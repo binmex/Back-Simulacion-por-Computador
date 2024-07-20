@@ -1,4 +1,6 @@
+const mongoose = require("mongoose");
 const Faculty = require("../models/faculty-model");
+const Program = require("../models/program-model");
 
 exports.getAllFaculties = async (req, res) => {
   try {
@@ -67,6 +69,40 @@ exports.deleteFaculty = async (req, res) => {
     return res
       .status(200)
       .json({ success: true, message: "Facultad eliminada" });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// Obtener todos los programas de una facultad específica
+exports.getProgramsByFaculty = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ success: false, message: "ID de facultad inválido" });
+    }
+
+    const faculty = await Faculty.findById(id);
+    if (!faculty) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Facultad no encontrada" });
+    }
+
+    // Convertir el ObjectId a cadena
+    const facultyIdString = id.toString();
+
+    // Usar la cadena en la consulta
+    const programs = await Program.find({ faculty: facultyIdString }).populate('faculty');
+
+    if (programs.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No se encontraron programas para esta facultad" });
+    }
+
+    return res.status(200).json({ success: true, data: programs });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }

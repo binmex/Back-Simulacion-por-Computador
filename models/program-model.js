@@ -22,8 +22,7 @@ const ProgramSchema = new Schema({
     unique: true,
   },
   faculty: {
-    type: Schema.Types.ObjectId,
-    ref: "faculty",
+    type: String, // Cambia esto si necesitas almacenar como string en lugar de ObjectId
     required: true,
   },
   location: {

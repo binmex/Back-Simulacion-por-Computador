@@ -6,8 +6,9 @@ const {
   deleteFaculty,
   getFacultyById,
   updateFaculty,
+  getProgramsByFaculty,
 } = require("../controllers/facultiesControllers");
-
+const Program = require("../models/program-model"); 
 /**
  * @swagger
  * tags:
@@ -191,5 +192,42 @@ router.patch("/update/:id", updateFaculty);
  *         description: Error del servidor
  */
 router.delete("/delete/:id", deleteFaculty);
+
+/**
+ * @swagger
+ * /faculties/{id}/programs:
+ *   get:
+ *     tags:
+ *       - Facultades
+ *     description: Obtiene todos los programas de una facultad específica
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: objectId
+ *           example: "6085e894932ec20015bbf017" # Ejemplo de un ObjectId de MongoDB
+ *     responses:
+ *       200:
+ *         description: Éxito
+ *       404:
+ *         description: No se encontraron programas para esta facultad
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/:id/programs", getProgramsByFaculty);
+
+/**
+ * Endpoint temporal para listar todos los programas
+ */
+router.get("/all-programs", async (req, res) => {
+  try {
+    const programs = await Program.find().populate('faculty');
+    return res.status(200).json({ success: true, data: programs });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
 
 module.exports = router;
