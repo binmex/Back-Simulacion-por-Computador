@@ -4,6 +4,7 @@ const Topic = require("../models/topic-model");
 const mongoose = require("mongoose");
 
 
+//es para hallar materias inscritas del estudiante y traer otro atributos
 exports.findGroupsByStudent = async (req, res) => {
   const { studentId } = req.params;
   try {
@@ -40,40 +41,13 @@ exports.findGroupsByStudent = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-// exports.findGroupsByStudent = async (req, res) => {
-//   const { studentId } = req.params;
-//   try {
-//     const inscriptions = await Inscription.find({ student: studentId })
-//       .populate({
-//         path: 'group',
-//         populate: {
-//           path: 'topic',
-//           model: 'Topic'
-//         } 
-//       });
-
-//     const topics = inscriptions.map(inscription => ({
-//       inscriptionId: inscription._id,
-//       name: inscription.group.topic.name,
-//       aula: inscription.group.topic.aula,
-//       credits: inscription.group.topic.credits,
-//       state: inscription.group.topic.state,
-//       quotas: inscription.group.topic.quotas,
-//       grupo: inscription.group.grupo
-//     }));
-
-//     res.status(200).json({ success: true, data: topics });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, error: error.message });
-//   }
-// };
 
 exports.saveInscription = async (req, res) => {
   try {
     const { student, group, registrationDate } = req.body;
     const groupId = group._id;
 
+    // Verificar si el estudiante ya está inscrito en el grupo
     let existingInscription = await Inscription.findOne({ student: student._id, group: groupId });
     if (existingInscription) {
       return res.status(400).json({ success: false, error: "El estudiante ya está inscrito en este grupo." });
@@ -91,6 +65,27 @@ exports.saveInscription = async (req, res) => {
       return res.status(404).json({ success: false, error: "Materia no encontrada" });
     }
 
+    // Verificar el límite de créditos
+    const inscriptions = await Inscription.find({ student: student._id })
+      .populate({
+        path: 'group',
+        populate: {
+          path: 'topic',
+          model: 'topic',
+          select: 'credits'
+        }
+      })
+
+    const totalCredits = inscriptions.reduce((sum, inscription) => {
+
+      return sum + inscription.group.topic.credits;
+
+    }, 0);
+    (console.log(totalCredits))
+    if (totalCredits + originalTopic.credits > 21) {
+      return res.status(400).json({ success: false, error: "No se puede inscribir. El límite de créditos es 21." });
+    }
+    //hasta aqui va lo de creditos
     if (originalGroup.quotas <= 0) {
       const availableGroups = await Group.find({
         topic: originalTopic._id,
@@ -137,7 +132,7 @@ exports.saveInscription = async (req, res) => {
     await newInscription.save();
 
     const inscriptionCount = await Inscription.countDocuments({ group: targetGroup._id });
-    targetGroup.quotas = Math.max(originalTopic.quotas - inscriptionCount, 0); 
+    targetGroup.quotas = Math.max(originalTopic.quotas - inscriptionCount, 0);
 
     await targetGroup.save();
 
@@ -236,7 +231,7 @@ exports.deleteInscription = async (req, res) => {
     }
 
     const inscriptionCount = await Inscription.countDocuments({ group: group._id });
-    group.quotas = Math.max(topic.quotas - inscriptionCount, 0); 
+    group.quotas = Math.max(topic.quotas - inscriptionCount, 0);
 
     await group.save();
 
