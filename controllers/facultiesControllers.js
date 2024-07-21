@@ -30,6 +30,20 @@ exports.getFacultyById = async (req, res) => {
   }
 };
 
+exports.findById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const faculty = await Faculty.findById(id);
+    if (!faculty) {
+      return res.status(404).json({ state: false, message: "No encontrado" });
+    } else {
+      return res.status(200).json({ state: true, data: faculty });
+    }
+  } catch (error) {
+    return res.status(500).json({ state: false, error: error.message });
+  }
+};
+
 exports.createFaculty = async (req, res) => {
   const faculty = new Faculty(req.body);
   try {

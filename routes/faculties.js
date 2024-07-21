@@ -7,6 +7,7 @@ const {
   getFacultyById,
   updateFaculty,
   getProgramsByFaculty,
+  findById
 } = require("../controllers/facultiesControllers");
 const Program = require("../models/program-model"); 
 /**
@@ -108,6 +109,31 @@ router.post("/save", createFaculty);
  *         description: Error del servidor
  */
 router.get("/findById/:id", getFacultyById);
+
+/**
+ * @swagger
+ * /faculties/findById/{objectId}:
+ *   get:
+ *     tags:
+ *       - Facultades
+ *     description: Busca una facultad por su ObjectId de MongoDB
+ *     parameters:
+ *       - in: path
+ *         name: objectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: objectId
+ *           example: "6085e894932ec20015bbf017" # Ejemplo de un objectId de MongoDB
+ *     responses:
+ *       200:
+ *         description: Success
+ *       404:
+ *         description: Not found
+ *       500:
+ *         description: Error del servidor
+ */
+router.get("/findByObjectId/:id", findById);
 
 /**
  * @swagger
