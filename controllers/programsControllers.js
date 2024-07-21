@@ -1,5 +1,5 @@
 const Program = require("../models/program-model");
-
+const Faculty = require("../models/faculty-model");
 exports.getAllPrograms = async (req, res) => {
   try {
     const programs = await Program.find().populate("faculty");
@@ -15,14 +15,23 @@ exports.getAllPrograms = async (req, res) => {
   }
 };
 
+
 exports.getProgramById = async (req, res) => {
   try {
-    const program = await Program.findById(req.params.id).populate("faculty");
-    if (!program)
-      return res
-        .status(404)
-        .json({ success: false, message: "Programa no encontrado" });
-    return res.status(200).json({ success: true, data: program });
+    const program = await Program.findById(req.params.id);
+    if (!program) {
+      return res.status(404).json({ success: false, message: "Programa no encontrado" });
+    }
+    const faculty = await Faculty.findById(program.faculty);
+    if (!faculty) {
+      return res.status(404).json({ success: false, message: "Facultad no encontrada" });
+    }
+    const programWithFaculty = {
+      ...program.toObject(),
+      faculty: faculty.toObject(),
+    };
+
+    return res.status(200).json({ success: true, data: programWithFaculty });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
