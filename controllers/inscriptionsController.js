@@ -21,7 +21,7 @@ exports.findGroupsByStudent = async (req, res) => {
       .select('_id group'); // Solo selecciona el ID y el grupo de la inscripción
 
     if (!inscriptions || inscriptions.length === 0) {
-      return res.status(404).json({ success: false, message: "Inscripciones no encontradas" });
+      return res.status(200).json({ success: true, data: [] });
     }
 
     const topics = inscriptions.map(inscription => ({
@@ -33,11 +33,9 @@ exports.findGroupsByStudent = async (req, res) => {
       quotas: inscription.group.topic.quotas,
       grupo: inscription.group.grupo
     }));
-    console.log(topics)
-
+    
     res.status(200).json({ success: true, data: topics });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
@@ -179,9 +177,7 @@ exports.findInscriptionsByStudent = async (req, res) => {
       .populate("group")
       .populate("student");
     if (!inscriptions || inscriptions.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Inscripciones no encontradas" });
+      return res.status(200).json({ success: true, data: [] });
     }
     res.status(200).json({ success: true, data: inscriptions });
   } catch (error) {
